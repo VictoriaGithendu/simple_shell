@@ -147,6 +147,7 @@ int execute_commands(data_shell *data_struct, char *input)
 	addNode(&head_s, &head_l, input);
 	sep_l = head_s;
 	line_l = head_l;
+	count = 1;
 	while (line_l != NULL)
 	{
 		data_struct->input = line_l->line;
@@ -156,6 +157,8 @@ int execute_commands(data_shell *data_struct, char *input)
 		if (count == 0)
 			break;
 		move_to_nxt(&sep_l, &line_l, data_struct);
+		if (sep_l != NULL)
+			sep_l = sep_l->next;
 		if (line_l != NULL)
 			line_l = line_l->next;
 	}
