@@ -75,7 +75,7 @@ ssize_t read_line_input(char **line_buffer, size_t *line_size, FILE *stream)
 		input++;
 	}
 	buffer[input] = '\0';
-	assign_line_buffer(line_buffer, line_size, buffer, input);
+	assign_line_buf(line_buffer, line_size, buffer, input);
 	retval = input;
 	if (x != 0)
 		input = 0;

@@ -14,7 +14,7 @@ void run_shell(data_shell *data_struct)
 		printf("^-^ ");
 		input = read_input_line(&eof_indicator);
 		if (eof_indicator != -1)
-			input = remove_comment(input);
+			input = remove_comments(input);
 		if (input == NULL)
 			continue;
 		if (checkSyntaxError(data_struct, input) == 1)

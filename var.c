@@ -78,7 +78,7 @@ int find_var(r_var **var_l, char *input_s, char *stat, data_shell *data_struct)
 char *rep_var(r_var **var_l, char *input_s, char *new_input, int new_length)
 {
 	r_var *current;
-	int x, y, z;
+	int x, y;
 	current = *var_l;
 	
 	for (x = y = 0;  x < new_length; x++)
@@ -107,7 +107,7 @@ char *rep_var(r_var **var_l, char *input_s, char *new_input, int new_length)
  */
 char *rep_str_var(char *input_str, data_shell *data_struct)
 {
-	r_var *var_list;
+  r_var *var_list, *current;
 	char *status_str = iToA(data_struct->status);
 	int origin_length = find_var(&var_list, input_str, status_str, data_struct);
 	int new_length = 0;
@@ -118,7 +118,7 @@ char *rep_str_var(char *input_str, data_shell *data_struct)
 		free(status_str);
 		return (input_str);
 	}
-	r_var *current = var_list;
+	current = var_list;
 
 	while (current != NULL)
 	{

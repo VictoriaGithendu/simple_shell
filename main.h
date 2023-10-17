@@ -131,7 +131,7 @@ void printSyntaxError(data_shell *, char *, int, int bool);
 int checkSyntaxError(data_shell *, char *);
 
 /* shell.c */
-char *remove_comment(char *input);
+char *remove_comments(char *input);
 void run_shell(data_shell *data_struct);
 
 /* string_split.c */
