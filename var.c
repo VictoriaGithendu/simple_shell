@@ -134,8 +134,10 @@ char *rep_str_var(char *input_str, data_shell *data_struct)
 		current = current->next;
 	}
 	new_len += old_len;
+
 	new_input = malloc(sizeof(char) * (new_len + 1));
 	new_input[new_len] = '\0';
+
 	new_input = rep_var(&var_l, input_str, new_input, new_len);
 
 	free(input_str);
