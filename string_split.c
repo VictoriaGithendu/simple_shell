@@ -1,38 +1,41 @@
 #include "main.h"
 /**
- * tokenize_input - function that tokenizes a string input
+ * splitLine - function that tokenizes a string input
  * @input: string input to tokenize
  * Return: token array
  */
-char **tokenize_input(char *input)
+char **splitLine(char *input)
 {
-	size_t token_size = 64;
+	size_t token_size;
 	size_t x = 0;
-	char **tokens = (char **)malloc(token_size * sizeof(char *));
+	char **tokens;
 	char *token;
+
+	token_size = TOK_BUFSIZE;
+	tokens = malloc(sizeof(char *) * (token_size));
 	if (tokens == NULL)
 	{
-		fprintf(stderr, "allocation error\n");
+		write(STDERR_FILENO, ": allocation error\n", 18);
 		exit(EXIT_FAILURE);
 	}
 	token = strTok(input, TOK_DELIM);
+	tokens[0]  = token;
 
-	while (token != NULL)
+	for (x = 1; token != NULL; x++)
 	{
-		if (x >= token_size - 1)
+		if (x == token_size)
 		{
-			token_size += 64;
-			tokens = (char **)realloc(tokens, token_size * sizeof(char *));
+			token_size += TOK_BUFSIZE;
+			tokens = reAllocDp(tokens, x, sizeof(char *)  * token_size);
 			if (tokens == NULL)
 			{
-				fprintf(stderr, "Allocation error\n");
+				write(STDERR_FILENO, ": allocation error\n", 18);
 				exit(EXIT_FAILURE);
 			}
 		}
-		tokens[x++] = token;
 		token = strTok(NULL, TOK_DELIM);
+		tokens[x] = token;
 	}
-	tokens[x] = NULL;
 	return (tokens);
 }
 /**
@@ -48,29 +51,35 @@ char *swap_special_chars(char *input, int bool)
 	if (bool == 0)
 		for (x = 0; input[x]; x++)
 		{
-			if (input[x] == '|' && input[x + 1] != '|')
-				input[x] = '\x10';
-			else if (input[x] == '&' && input[x + 1] != '&')
-				input[x] = '\f';
+			if (input[x] == '|')
+			{
+				if (input[x + 1] != '|')
+					input[x] = 16;
+				x++;
+			}
+			if (input[x] == '&')
+			{
+				if (input[x + 1] != '&')
+					input[x] = 12;
+				x++;
+			}
 		}
 	else
 		for (x = 0; input[x]; x++)
 		{
-			if (input[x] == '\x10')
-				input[x] = '|';
-			else if (input[x] == '\f')
-				input[x] = '&';
+			input[x] = (input[x] == 16 ? '|' : input[x]);
+					input[x] = (input[x] == 12 ? '&' : input[x]);
 		}
 	return (input);
 }
 /**
- * parse_input - parses the input string and creates separator and command line
+ * addNode - parses the input string and creates separator and command line
  * @input: string input
  * @head_s: separator list head
  * @head_l: command line list head
  * Return: 0
  */
-void parse_input(char *input, sep_list **head_s, line_list **head_l)
+void addNode(sep_list **head_s, line_list **head_l, char *input)
 {
 	char *line;
 	int x;
@@ -131,24 +140,28 @@ void move_to_nxt(sep_list **sep_l, line_list **line_l, data_shell *data_struct)
  */
 int execute_commands(data_shell *data_struct, char *input)
 {
-	sep_list *sep, *sep_node = NULL;
-	line_list *line, *line_node = NULL;
+	sep_list *head_s, *sep_l;
+	line_list *head_l, *line_l;
 	int count;
 
-	parse_input(input, &sep, &line);
-	while (line_node)
+	addNode(&head_s, &head_l, input);
+	sep_l = head_s;
+	line_l = head_l;
+	while (line_l != NULL)
 	{
-		data_struct->input = line_node->line;
-		data_struct->args  = tokenize_input(data_struct->input);
+		data_struct->input = line_l->line;
+		data_struct->args  = splitLine(data_struct->input);
 		count = execute_line(data_struct);
 		free(data_struct->args);
 		if (count == 0)
 			break;
-		move_to_nxt(&sep_node, &line_node, data_struct);
-		if (line_node)
-			line_node = line_node->next;
+		move_to_nxt(&sep_l, &line_l, data_struct);
+		if (line_l != NULL)
+			line_l = line_l->next;
 	}
-	freeSepList(&sep);
-	freeLineList(&line);
-	return (count ? 1 : 0);
+	freeSepList(&head_s);
+	freeLineList(&head_l);
+	if (count == 0)
+	return (0);
+	return (1);
 }

@@ -136,10 +136,10 @@ void run_shell(data_shell *data_struct);
 
 /* string_split.c */
 char *swap_special_chars(char *input, int bool);
-void parse_input(char *input, sep_list **head_s, line_list **head_l);
+void addNode(sep_list **head_s, line_list **head_l, char *input);
 void move_to_nxt(sep_list **sep_l, line_list **line_l, data_shell *data_struct);
 int execute_commands(data_shell *data_struct, char *input);
-char **tokenize_input(char *input);
+char **spliLine(char *input);
 
 /* var.c */
 void check_env_alt(r_var **var_list, char *input_str, data_shell *data_struct);
