@@ -12,10 +12,10 @@ char **tokenize_input(char *input)
 
 	if (tokens == NULL)
 	{
-		fprintf(sstderr, "allocation error\n");
+		fprintf(stderr, "allocation error\n");
 		exit(EXIT_FAILURE);
 	}
-	char *token = strtok(input, TOK_DELIM);
+	char *token = strTok(input, TOK_DELIM);
 
 	while (token != NULL)
 	{
@@ -30,7 +30,7 @@ char **tokenize_input(char *input)
 			}
 		}
 		tokens[x++] = token;
-		token = strtok(NULL, TOK_DELIM);
+		token = strTok(NULL, TOK_DELIM);
 	}
 	tokens[x] = NULL;
 	return (tokens);
@@ -79,30 +79,30 @@ void parse_input(char *input, sep_list **head_s, line_list **head_l)
 	for (x = 0; input[x]; x++)
 	{
 		if (input[x] == ';')
-			add_separator_node_end(head_s, input[x]);
+			addSepNodeEnd(head_s, input[x]);
 	}
 	if (input[x] == '|' || input[x] == '&')
-		add_separator_node_end(head_s, input[x]);
+		addSepNodeEnd(head_s, input[x]);
 	x++;
 
-	line = strtok(input, ";|&");
+	line = strTok(input, ";|&");
 	do {
 		line = swap_special_chars(line, 1);
-		add_line_node_end(head_l, line);
-		line = strtok(NULL, ";|&");
-	} while (line != NULL)
+		addLineNodeEnd(head_l, line);
+		line = strTok(NULL, ";|&");
+	} while (line != NULL);
 }
 /**
- * move_to_next - move to the next command line stored based on the separator
- * @sep_list: list separator
- * @line_list: line list command
+ * move_to_nxt - move to the next command line stored based on the separator
+ * @sep_l: list separator
+ * @line_l: line list command
  * @data_struct: relevant data
  */
-void move_to_next(sep_list **sep_list, line_list **line_list, shell *data_struct)
+void move_to_nxt(sep_list **sep_l, line_list **line_l, data_shell *data_struct)
 {
 	int continue_loop = 1;
-	sep_list *sep_node = *separator_list;
-	line_list *line_node = *line_list;
+	sep_list *sep_node = *sep_l;
+	line_list *line_node = *line_l;
 
 	while (sep_node != NULL && continue_loop)
 	{
@@ -113,7 +113,6 @@ void move_to_next(sep_list **sep_list, line_list **line_list, shell *data_struct
 	if (sep_node->separator == '|')
 		line_node = line_node->next;
 	sep_node = sep_node->next;
-	else
 	{
 		if (sep_node->separator == '|' || sep_node->separator == ';')
 			continue_loop = 0;
@@ -130,28 +129,26 @@ void move_to_next(sep_list **sep_list, line_list **line_list, shell *data_struct
  * @input: string input
  * Return: 0 on exit, 1 to continue
  */
-int execute_commands(shell *data_struct, char *input)
+int execute_commands(data_shell *data_struct, char *input)
 {
 	sep_list *sep, *sep_node = NULL;
 	line_list *line, *line_node = NULL;
 	int count;
 
 	parse_input(input, &sep, &line);
-	sep_node = line;
-
 	while (line_node)
 	{
 		data_struct->input = line_node->line;
 		data_struct->args  = tokenize_input(data_struct->input);
-		cont = execute_command(data_struct);
-		free(datash->args);
-		if (cont == 0)
+		count = execute_line(data_struct);
+		free(data_struct->args);
+		if (count == 0)
 			break;
-		move_to_next(&sep_node, &line_node, data_struct);
+		move_to_nxt(&sep_node, &line_node, data_struct);
 		if (line_node)
 			line_node = line_node->next;
 	}
-	free_separator_list(&sep);
-	free_line_list(&line);
-	return (cont ? 1 : 0);
+	freeSepList(&sep);
+	freeLineList(&line);
+	return (count ? 1 : 0);
 }

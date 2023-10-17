@@ -1,10 +1,10 @@
 #include "main.h"
 /**
  * run_shell - function that runs shell loop
- * @datash: relevant data
+ * @data_struct: relevant data
  * Return: 0
  */
-void run_shell(shell *datash)
+void run_shell(data_shell *data_struct)
 {
 	int continue_loop = 1, eof_indicator;
 	char *input;
@@ -12,23 +12,22 @@ void run_shell(shell *datash)
 	while (continue_loop == 1)
 	{
 		printf("^-^ ");
-		input = read_input(&eof_indicator);
+		input = read_input_line(&eof_indicator);
 		if (eof_indicator != -1)
-			input = remove_comments(input);
+			input = remove_comment(input);
 		if (input == NULL)
 			continue;
-		if (check_syntax(datash, input) == 1)
+		if (checkSyntaxError(data_struct, input) == 1)
 		{
-			datash->status = 2;
+			data_struct->status = 2;
 			free(input);
 			continue;
 		}
-		input = replace_variables(input, datash);
-		continue_loop = execute_commands(datash, input);
-		datash->counter += 1;
+		input = rep_str_var(input, data_struct);
+		continue_loop = execute_commands(data_struct, input);
+		data_struct->counter += 1;
 		free(input);
 	}
-	else
 	{
 		continue_loop = 0;
 		free(input);

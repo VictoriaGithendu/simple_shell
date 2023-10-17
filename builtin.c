@@ -1,26 +1,45 @@
-include "main.h"
+#include "main.h"
 /**
  * find_builtin - finding function pointer of a command
  * @command: command to  find function pointer
  * Return: function pointer of the builtin command
  */
-int (*find_builtin(char *command))(shell *)
+int (*find_builtin(char *command))(data_shell *)
 {
 	int index;
 
 	builtin_t builtin[] = {
-		{ "env", _env },
+		{ "env", print_environ },
 		{ "exit", exit_shell },
-		{ "setenv", _setenv },
-		{ "unsetenv", _unsetenv },
-		{ "cd", cd_shell },
-		{ "help", get_help },
+		{ "setenv", _set_environ },
+		{ "unsetenv", _unset_environ },
+		{ "cd", cdShell },
+		{ "help", handle_help },
 		{ NULL, NULL }
 	};
 	for (index = 0; builtin[index].name; index++)
 	{
-		if (_strcmp(builtin[index].name, command) == 0)
+		if (strCmp(builtin[index].name, command) == 0)
 			break;
 	}
 	return (builtin[index].f);
+}
+/**
+ * execute_line - determines input is a builtin command
+ * @data_struct: data relevant (args)
+ * Return: 1 on success.
+ */
+int execute_line(data_shell *data_struct)
+{
+	int (*builtin)(data_shell *data_struct);
+
+	if (data_struct->args[0] == NULL)
+		return (1);
+
+	builtin = find_builtin(data_struct->args[0]);
+
+	if (builtin != NULL)
+		return (builtin(data_struct));
+
+	return (cmdExec(data_struct));
 }

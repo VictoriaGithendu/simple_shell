@@ -4,7 +4,7 @@
  * @data_struct: data structure to be released
  * Return: no return
  */
-void release_data_structure(shell *data_struct)
+void release_data_structure(data_shell *data_struct)
 {
 	unsigned int index;
 
@@ -17,12 +17,12 @@ void release_data_structure(shell *data_struct)
 	free(data_struct->pid);
 }
 /**
- * initialize_data_structure - Initialize data structure withgiven arguements
+ * init_data_structure - Initialize data structure withgiven arguements
  * @data_struct: data structure
  * @arguement_vector: argument vector
  * Return: no return
  */
-void initialize_data_structure(shell *data_struct, char **arguement_vector)
+void init_data_structure(data_shell *data_struct, char **arguement_vector)
 {
 	unsigned int index;
 
@@ -38,10 +38,10 @@ void initialize_data_structure(shell *data_struct, char **arguement_vector)
 
 	for (index = 0; environ[index]; index++)
 	{
-		data_struct->_environ[i] = _strdup(environ[i]);
+		data_struct->_environ[index] = strDup(environ[index]);
 	}
 	data_struct->_environ[index] = NULL;
-	data_struct->pid = aux_itoa(getpid());
+	data_struct->pid = iToA(getpid());
 }
 /**
  * main - Main shell entry point
@@ -51,11 +51,11 @@ void initialize_data_structure(shell *data_struct, char **arguement_vector)
  */
 int main(int arguement_count, char **arguement_vector)
 {
-	shell data_struct;
+	data_shell data_struct;
 	(void) arguement_count;
 
 	signal(SIGINT, handle_sigint);
-	initialize_data_structure(&data_struct, arguement_vector);
+	init_data_structure(&data_struct, arguement_vector);
 	run_shell(&data_struct);
 	release_data_structure(&data_struct);
 	if (data_struct.status < 0)

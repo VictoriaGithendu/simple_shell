@@ -28,18 +28,18 @@ void assign_line_buf(char **line_buf, size_t *line_s, char *buf, size_t buf_s)
 	}
 	else
 	{
-		_strcpy(*line_buf, buf);
+		strCpy(*line_buf, buf);
 		free(buf);
 	}
 }
 /**
- * read_input_line - Read inpt from stream
+ * read_line_input - Read inpt from stream
  * @line_buffer: buffer that stores the input line
  * @line_size: size of line buffer
  * @stream: stream to read from
  * Return: The number of bytes read
  */
-ssize_t read_input_line(char **line_buffer, size_t *line_size, FILE *stream)
+ssize_t read_line_input(char **line_buffer, size_t *line_size, FILE *stream)
 {
 	int x;
 	static ssize_t input;
@@ -70,7 +70,7 @@ ssize_t read_input_line(char **line_buffer, size_t *line_size, FILE *stream)
 			break;
 		}
 		if (input >= BUFSIZE)
-			buffer = _realloc(buffer, input, input + 1);
+			buffer = reAlloc(buffer, input, input + 1);
 		buffer[input] = character;
 		input++;
 	}
@@ -80,4 +80,18 @@ ssize_t read_input_line(char **line_buffer, size_t *line_size, FILE *stream)
 	if (x != 0)
 		input = 0;
 	return (retval);
+}
+/**
+ * read_input_line - reads and returns an input line.
+ * @i_eof: return value of getline function
+ * Return: input string
+ */
+char *read_input_line(int *i_eof)
+{
+	char *input_str = NULL;
+	size_t buffer_size = 0;
+
+	*i_eof = getline(&input_str, &buffer_size, stdin);
+
+	return (input_str);
 }
