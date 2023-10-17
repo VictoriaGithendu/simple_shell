@@ -1,7 +1,7 @@
 #include "main.h"
 /**
  * check_env_alt - checks if the input string is an env variable
- * @var_list: head of linked list
+ * @var_list: linked list head
  * @input_str: input string to check
  * @data_struct: data structure
  * Return: no return
@@ -50,7 +50,7 @@ int find_var(r_var **var_l, char *input_s, char *stat, data_shell *data_struct)
 	int length_status = strLength(stat);
 	int length_pid = strLength(data_struct->pid);
 
-	while (input_s[x])
+	for (x = 0; input_s[x]; x++)
 	{
 		if (input_s[x] == '$')
 		{
@@ -59,6 +59,7 @@ int find_var(r_var **var_l, char *input_s, char *stat, data_shell *data_struct)
 			else if (input_s[x + 1] == '$')
 				addVarNode(var_l, 2, data_struct->pid, length_pid), x++;
 			else if (input_s[x + 1] == '\n' || input_s[x + 1] == '\0' ||
+			(input_s[x + 1] == ' ') ||
 			input_s[x + 1] == 't' || input_s[x + 1] == ';')
 				addVarNode(var_l, 0, NULL, 0);
 			else
@@ -69,7 +70,7 @@ int find_var(r_var **var_l, char *input_s, char *stat, data_shell *data_struct)
 }
 /**
  * rep_var - replaces variables in the input string
- * @var_l: head of the linked list
+ * @var_l: linked list head
  * @input_s: input string
  * @new_input: new input string (replaced)
  * @new_length: new  string length
@@ -79,19 +80,24 @@ char *rep_var(r_var **var_l, char *input_s, char *new_input, int new_length)
 {
 	r_var *current;
 	int x, y, z;
+
 	current = *var_l;
-	
 	for (x = y = 0;  x < new_length; x++)
 		if (input_s[y] == '$')
 		{
-			if(!(current->len_var) && !(current->len_val))
-				{
-					new_input[x] = input_s[y];
-					y++;
-				}
+			if (!(current->len_var) && !(current->len_val))
+				new_input[x] = input_s[y];
+			y++;
+		}
+			else if (current->len_var && !(current->len_val))
+				for (z = 0; z < current->len_var; z++)
+					y++, x--;
+			else
+				for (z =  0; z < current->len_val; z++)
+					new_input[x] = current->val[z];
+			x++;
 			y += (current->len_var);
 			x--;
-		}
 	current = current->next;
 	{
 		new_input[x] = input_s[y];
@@ -107,32 +113,34 @@ char *rep_var(r_var **var_l, char *input_s, char *new_input, int new_length)
  */
 char *rep_str_var(char *input_str, data_shell *data_struct)
 {
-	r_var *var_list;
-	char *status_str = iToA(data_struct->status);
-	int origin_length = find_var(&var_list, input_str, status_str, data_struct);
-	int new_length = 0;
-	char *new_input;
+	r_var *var_l, *current;
+	char *status, *new_input;
+	int old_len, new_len;
 
-	if (var_list == NULL)
+	var_l = NULL;
+	status = iToA(data_struct->status);
+	old_len = find_var(&var_l, input_str, status, data_struct);
+	if (var_l == NULL)
 	{
-		free(status_str);
+		free(status);
 		return (input_str);
 	}
-	r_var *current = var_list;
+	current = var_l;
+	new_len = 0;
 
 	while (current != NULL)
 	{
-		new_length += (current->len_val - current->len_var);
+		new_len += (current->len_val - current->len_var);
 		current = current->next;
 	}
-	new_length += origin_length;
-	new_input = malloc(sizeof(char) * (new_length + 1));
-	new_input[new_length] = '\0';
-	new_input = rep_var(&var_list, input_str, new_input, new_length);
+	new_len += old_len;
+	new_input = malloc(sizeof(char) * (new_len + 1));
+	new_input[new_len] = '\0';
+	new_input = rep_var(&var_l, input_str, new_input, new_len);
 
 	free(input_str);
-	free(status_str);
-	freeVarList(&var_list);
+	free(status);
+	freeVarList(&var_l);
 
 	return (new_input);
 }

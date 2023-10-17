@@ -13,7 +13,7 @@ int exit_shell(data_shell *data_struct)
 
 	if (data_struct->args[1] != NULL)
 	{
-		exit_status = atoi(data_struct->args[1]);
+		exit_status = aToI(data_struct->args[1]);
 		is_dig = isDigit(data_struct->args[1]);
 		str_length = strLength(data_struct->args[1]);
 		max_no = exit_status > (unsigned int)INT_MAX;

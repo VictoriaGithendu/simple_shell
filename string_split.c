@@ -9,13 +9,13 @@ char **tokenize_input(char *input)
 	size_t token_size = 64;
 	size_t x = 0;
 	char **tokens = (char **)malloc(token_size * sizeof(char *));
-
+	char *token;
 	if (tokens == NULL)
 	{
 		fprintf(stderr, "allocation error\n");
 		exit(EXIT_FAILURE);
 	}
-	char *token = strTok(input, TOK_DELIM);
+	token = strTok(input, TOK_DELIM);
 
 	while (token != NULL)
 	{

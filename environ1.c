@@ -1,8 +1,8 @@
 #include "main.h"
 /**
  * dup_inf - duplicates info to create new env or aliaas
- * @cmd_name: name (env or alias)
- * @cmd_value: value (env or alias)
+ * @cmd_name: name
+ * @cmd_value: value
  * Return: new env or alias.
  */
 char *dup_inf(char *cmd_name, char *cmd_value)
@@ -23,8 +23,8 @@ char *dup_inf(char *cmd_name, char *cmd_value)
 }
 /**
  * _setenviron - sets an environment variable
- * @cmd_name: name of the environment variable
- * @cmd_value: value of the environment variable
+ * @cmd_name: environment variable name
+ * @cmd_value: environment variable value
  * @data_struct: data structure (environ)
  * Return: no return
  */
@@ -47,13 +47,14 @@ void _setenviron(char *cmd_name, char *cmd_value, data_shell *data_struct)
 		free(environ_var);
 	}
 
-	data_struct->_environ = reAllocDp(data_struct->_environ, x, sizeof(char *) * (x + 2));
+	data_struct->_environ = reAllocDp(data_struct->_environ,
+			x, sizeof(char *) * (x + 2));
 	data_struct->_environ[x] = dup_inf(cmd_name, cmd_value);
 	data_struct->_environ[x + 1] = NULL;
 }
 /**
- * _set_environ - compares env variables names
- * @data_struct: data relevant (env name and env value)
+ * _set_environ - function that compares env variables names
+ * @data_struct: data
  * Return: 1 on success.
  */
 int _set_environ(data_shell *data_struct)
@@ -68,8 +69,8 @@ int _set_environ(data_shell *data_struct)
 	return (1);
 }
 /**
- * _unset_environ - deletes a environment variable
- * @data_struct: data relevant (env name)
+ * _unset_environ - function that deletes environment variable
+ * @data_struct: data relevant
  * Return: 1 on success.
  */
 int _unset_environ(data_shell *data_struct)

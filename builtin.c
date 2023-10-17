@@ -26,7 +26,7 @@ int (*find_builtin(char *command))(data_shell *)
 }
 /**
  * execute_line - determines input is a builtin command
- * @data_struct: data relevant (args)
+ * @data_struct: data pointer
  * Return: 1 on success.
  */
 int execute_line(data_shell *data_struct)

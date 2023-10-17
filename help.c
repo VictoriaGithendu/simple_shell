@@ -1,7 +1,7 @@
 #include "main.h"
 /**
- * handle_help - function that retrieves help messages according builtin
- * @data_struct: data structure (args and input)
+ * handle_help - retrieves help messages according builtin
+ * @data_struct: data structure
  * Return: Return 0
 */
 int handle_help(data_shell *data_struct)

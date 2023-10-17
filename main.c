@@ -6,25 +6,24 @@
  */
 void release_data_structure(data_shell *data_struct)
 {
-	unsigned int index;
+	unsigned int x;
 
-	while (data_struct->_environ[index])
+	for (x = 0; data_struct->_environ[x]; x++)
 	{
-		free(data_struct->_environ[index]);
-		index++;
+		free(data_struct->_environ[x]);
 	}
 	free(data_struct->_environ);
 	free(data_struct->pid);
 }
 /**
- * init_data_structure - Initialize data structure withgiven arguements
+ * init_data_structure - Initialize data structure with given arguements
  * @data_struct: data structure
  * @arguement_vector: argument vector
  * Return: no return
  */
 void init_data_structure(data_shell *data_struct, char **arguement_vector)
 {
-	unsigned int index;
+	unsigned int x;
 
 	data_struct->av = arguement_vector;
 	data_struct->input = NULL;
@@ -32,15 +31,15 @@ void init_data_structure(data_shell *data_struct, char **arguement_vector)
 	data_struct->status = 0;
 	data_struct->counter = 1;
 
-	for (index = 0; environ[index]; index++)
+	for (x = 0; environ[x]; x++)
 		;
-	data_struct->_environ = malloc(sizeof(char *) * (index + 1));
+	data_struct->_environ = malloc(sizeof(char *) * (x + 1));
 
-	for (index = 0; environ[index]; index++)
+	for (x = 0; environ[x]; x++)
 	{
-		data_struct->_environ[index] = strDup(environ[index]);
+		data_struct->_environ[x] = strDup(environ[x]);
 	}
-	data_struct->_environ[index] = NULL;
+	data_struct->_environ[x] = NULL;
 	data_struct->pid = iToA(getpid());
 }
 /**

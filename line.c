@@ -91,7 +91,7 @@ char *read_input_line(int *i_eof)
 	char *input_str = NULL;
 	size_t buffer_size = 0;
 
-	*i_eof = getline(&input_str, &buffer_size, stdin);
+	*i_eof = read_line_input(&input_str, &buffer_size, stdin);
 
 	return (input_str);
 }

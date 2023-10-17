@@ -1,7 +1,7 @@
 #include "main.h"
 /**
  * handle_error - handles error according the builtin, syntax or permission
- * @data_struct: data structure containing arguments and input
+ * @data_struct: data structure containing arguments
  * @err_val: error value code
  * Return: error
  */
@@ -12,10 +12,10 @@ int handle_error(data_shell *data_struct, int err_val)
 	switch (err_val)
 	{
 	case -1:
-		error_message = "print_environ(data_struct)";
+		error_message = errorEnv(data_struct);
 		break;
 	case 126:
-		error_message = "error_path_126(data_struct)";
+		error_message = errorPath(data_struct);
 		break;
 	case 127:
 		error_message = errorNotFound(data_struct);

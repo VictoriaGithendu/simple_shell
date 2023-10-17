@@ -6,14 +6,15 @@
  */
 void run_shell(data_shell *data_struct)
 {
-	int continue_loop = 1, eof_indicator;
+	int continue_loop = 1;
+	int i_eof;
 	char *input;
 
 	while (continue_loop == 1)
 	{
-		printf("^-^ ");
-		input = read_input_line(&eof_indicator);
-		if (eof_indicator != -1)
+		write(STDIN_FILENO, "^-^ ", 4);
+		input = read_input_line(&i_eof);
+		if (i_eof != -1)
 			input = remove_comments(input);
 		if (input == NULL)
 			continue;
@@ -40,18 +41,23 @@ void run_shell(data_shell *data_struct)
  */
 char *remove_comments(char *input)
 {
-	int x, end_index;
-
-	end_index = -1;
+	int x, y = 0;
 
 	for (x = 0; input[x]; x++)
+	{
 		if (input[x] == '#')
+		{
 			if (x == 0)
 				free(input);
-	return (NULL);
+			return (NULL);
+		}
 	if (input[x - 1] == ' ' || input[x - 1] == '\t' || input[x - 1] == ';')
-		end_index = x;
-	if (end_index != -1)
-		input[end_index] = '\0';
+		y = x;
+	}
+	if (y != -0)
+	{
+		input = reAlloc(input, x, y + 1);
+		input[y] = '\0';
+	}
 	return (input);
 }
