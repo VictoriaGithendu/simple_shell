@@ -13,12 +13,9 @@
 #include <signal.h>
 #include <sys/stat.h>
 
-/* macrs */
-#define BUFSIZE 1024
-#define TOK_BUFSIZE 128
-#define TOK_DELIM " \t\r\n\a"
 
 /* structures */
+
 /**
  * struct data - data structure with relevant data
  * @status: shell status pointer
@@ -29,27 +26,33 @@
  * @_environ: environment variable
  * @pid: shell process ID
  */
+
 typedef struct data
 {
-        char **av;
-        char *input;
-        char **args;
-        int status;
-        int counter;
-        char **_environ;
-        char *pid;
+char **av;
+char *input;
+char **args;
+int status;
+int counter;
+char **_environ;
+char *pid;
 } data_shell;
+
+
 /**
  * struct sep_list_s - single linked list
  * @separator: ; | &
  * @next: next node
  * Description: single linked list to store separators
  */
+
 typedef struct sep_list_s
 {
-        char separator;
-        struct sep_list_s *next;
+char separator;
+struct sep_list_s *next;
 } sep_list;
+
+
 /**
  * struct line_list_s - single linked list
  * @line: command line
@@ -58,9 +61,12 @@ typedef struct sep_list_s
  */
 typedef struct line_list_s
 {
-        char *line;
-        struct line_list_s *next;
+char *line;
+struct line_list_s *next;
 } line_list;
+
+
+
 /**
  * struct r_var_list - single linked list
  * @len_var: length of the variable
@@ -69,28 +75,40 @@ typedef struct line_list_s
  * @next: next node
  * Description: single linked list to store variable
  */
+
 typedef struct r_var_list
 {
-        int len_var;
-        char *val;
-        int len_val;
-        struct r_var_list *next;
+int len_var;
+char *val;
+int len_val;
+struct r_var_list *next;
 } r_var;
+
+
 /**
  * struct builtin_s - Builtin struct for command args.
  * @name: The name of the command builtin i.e cd, exit, env
  * @f: data type pointer function.
  */
+
 typedef struct builtin_s
 {
-        char *name;
-        int (*f)(data_shell *datash);
+char *name;
+int (*f)(data_shell *datash);
 } builtin_t;
+
+
+/* macros */
+#define BUFSIZE 1024
+#define TOK_BUFSIZE 128
+#define TOK_DELIM " \t\r\n\a"
+
 
 /* Pointer to array of strings */
 extern char **environ;
 
 /* prototypes */
+
 /* lists1.c */
 sep_list *addSepNodeEnd(sep_list **, char);
 void freeSepList(sep_list **);
@@ -137,18 +155,18 @@ void run_shell(data_shell *data_struct);
 /* string_split.c */
 char *swap_special_chars(char *input, int bool);
 void addNode(sep_list **head_s, line_list **head_l, char *input);
-void move_to_nxt(sep_list **sep_l, line_list **line_l, data_shell *data_struct);
+void move_to_nxt(sep_list **sep_l, line_list **line_l, data_shell *);
 int execute_commands(data_shell *data_struct, char *input);
 char **spliLine(char *input);
 
 /* var.c */
 void check_env_alt(r_var **var_list, char *input_str, data_shell *data_struct);
-int find_var(r_var **var_l, char *input_s, char *stat, data_shell *data_struct);
+int find_var(r_var **var_l, char *input_s, char *stat, data_shell *);
 char *rep_var(r_var **var_l, char *input_s, char *new_input, int new_length);
 char *rep_str_var(char *input_str, data_shell *data_struct);
 
 /* line.c */
-void assign_line_buffer(char **line_buffer, size_t *line_size, char *buffer, size_t buffer_size);
+void assign_line_buffer(char **line_buffer, size_t *, char *, size_t);
 ssize_t read_line_input(char **line_buffer, size_t *line_size, FILE *stream);
 char *read_input_line(int *i_eof);
 
