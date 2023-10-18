@@ -6,8 +6,9 @@
  */
 char *remove_comments(char *input)
 {
-	int x, y = 0;
+	int x, y;
 
+	y = 0;
 	for (x = 0; input[x]; x++)
 	{
 		if (input[x] == '#')
@@ -50,8 +51,6 @@ void run_shell(data_shell *data_struct)
 		if (checkSyntaxError(data_struct, input) == 1)
 		{
 			data_struct->status = 2;
-			free(input);
-			continue;
 		}
 		input = rep_str_var(input, data_struct);
 		continue_loop = execute_commands(data_struct, input);
