@@ -43,7 +43,7 @@ void init_data_structure(data_shell *data_struct, char **arguement_vector)
 	data_struct->pid = iToA(getpid());
 }
 /**
- * main - Main shell entry point
+ * main - entry point
  * @arguement_count: argument count
  * @arguement_vector: argument vector
  * Return: 0 on success.

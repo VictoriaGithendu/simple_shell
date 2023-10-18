@@ -26,8 +26,11 @@ int cmp_environ_var(const char *environ_var, const char *envname)
  */
 char *get_environ(const char *envname, char **environ_var)
 {
-	char *ptr = NULL;
-	int x, y = 0;
+	char *ptr;
+	int x, y;
+
+	ptr = NULL;
+	y = 0;
 
 	for (x = 0; environ_var[x]; x++)
 	{

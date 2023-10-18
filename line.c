@@ -1,34 +1,33 @@
 #include "main.h"
 /**
  * assign_line_buf - assigns the line buffer for get_line
- * @line_buf: pointer that store the input str
+ * @linep: pointer that store the input str
  * @buf: str that is been called to line
- * @line_s: size of line buffer
- * @buf_s: size of buffer input
+ * @x: size of line buffer
+ * @y: size of buffer input
  */
-void assign_line_buf(char **line_buf, size_t *line_s, char *buf, size_t buf_s)
+void assign_line_buf(char **linep, size_t *x, char *buf, size_t y)
 {
 
-	if (*line_buf == NULL)
+	if (*linep == NULL)
 	{
-		if  (buf_s > BUFSIZE)
-			*line_s = buf_s;
-
+		if  (y > BUFSIZE)
+			*x = y;
 		else
-			*line_s = BUFSIZE;
-		*line_buf = buf;
+			*x = BUFSIZE;
+		*linep = buf;
 	}
-	else if (*line_s < buf_s)
+	else if (*x < y)
 	{
-		if (buf_s > BUFSIZE)
-			*line_s = buf_s;
+		if (y > BUFSIZE)
+			*x = y;
 		else
-			*line_s = BUFSIZE;
-		*line_buf = buf;
+			*x = BUFSIZE;
+		*linep = buf;
 	}
 	else
 	{
-		strCpy(*line_buf, buf);
+		strCpy(*linep, buf);
 		free(buf);
 	}
 }

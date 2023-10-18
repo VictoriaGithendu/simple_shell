@@ -166,7 +166,7 @@ char *rep_var(r_var **var_l, char *input_s, char *new_input, int new_length);
 char *rep_str_var(char *input_str, data_shell *data_struct);
 
 /* line.c */
-void assign_line_buffer(char **line_buffer, size_t *, char *, size_t);
+void assign_line_buffer(char **linep, size_t *x, char *buf, size_t y);
 ssize_t read_line_input(char **line_buffer, size_t *line_size, FILE *stream);
 char *read_input_line(int *i_eof);
 

@@ -6,23 +6,21 @@
 */
 int handle_help(data_shell *data_struct)
 {
-	char *command = data_struct->args[1];
-
-	if (command == NULL)
+	if (data_struct->args[1] == NULL)
 		generalHelp();
-	else if (strCmp(command, "setenv") == 0)
+	else if (strCmp(data_struct->args[1], "setenv") == 0)
 		setenvHelp();
-	else if (strCmp(command, "env") == 0)
+	else if (strCmp(data_struct->args[1], "env") == 0)
 		envHelp();
-	else if (strCmp(command, "unsetenv") == 0)
+	else if (strCmp(data_struct->args[1], "unsetenv") == 0)
 		unsetenvHelp();
-	else if (strCmp(command, "help") == 0)
+	else if (strCmp(data_struct->args[1], "help") == 0)
 		infHelp();
-	else if (strCmp(command, "exit") == 0)
+	else if (strCmp(data_struct->args[1], "exit") == 0)
 		exitHelp();
-	else if (strCmp(command, "cd") == 0)
+	else if (strCmp(data_struct->args[1], "cd") == 0)
 		cdHelp();
-	else if (strCmp(command, "alias") == 0)
+	else if (strCmp(data_struct->args[1], "alias") == 0)
 		aliasHelp();
 	else
 		write(STDERR_FILENO, data_struct->args[0],

@@ -2,12 +2,10 @@
 /**
  * find_builtin - finding function pointer of a command
  * @command: command to  find function pointer
- * Return: function pointer of the builtin command
+ * Return: function pointer
  */
 int (*find_builtin(char *command))(data_shell *)
 {
-	int index;
-
 	builtin_t builtin[] = {
 		{ "env", print_environ },
 		{ "exit", exit_shell },
@@ -17,6 +15,8 @@ int (*find_builtin(char *command))(data_shell *)
 		{ "help", handle_help },
 		{ NULL, NULL }
 	};
+	int index;
+
 	for (index = 0; builtin[index].name; index++)
 	{
 		if (strCmp(builtin[index].name, command) == 0)
