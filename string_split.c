@@ -70,19 +70,24 @@ void addNode(sep_list **head_s, line_list **head_l, char *input)
  */
 void move_to_nxt(sep_list **sep_l, line_list **line_l, data_shell *data_struct)
 {
-	int continue_loop = 1;
-	sep_list *sep_node = *sep_l;
-	line_list *line_node = *line_l;
-
+	int continue_loop;
+	sep_list *sep_node;
+	line_list *line_node;
+	
+	continue_loop = 1;
+	sep_node = *sep_l;
+	line_node = *line_l;
 	while (sep_node != NULL && continue_loop)
 	{
 		if (data_struct->status == 0)
+		{
 			if (sep_node->separator == '&' || sep_node->separator == ';')
 				continue_loop = 0;
-	}
 	if (sep_node->separator == '|')
 		line_node = line_node->next;
 	sep_node = sep_node->next;
+		}
+		else
 	{
 		if (sep_node->separator == '|' || sep_node->separator == ';')
 			continue_loop = 0;
@@ -92,6 +97,9 @@ void move_to_nxt(sep_list **sep_l, line_list **line_l, data_shell *data_struct)
 	}
 	if (sep_node != NULL && !continue_loop)
 		sep_node = sep_node->next;
+	}
+	*sep_l = sep_node;
+	*line_l = line_node;
 }
 /**
  * splitLine - function that tokenizes a string input
@@ -143,7 +151,7 @@ int execute_commands(data_shell *data_struct, char *input)
 	sep_list *head_s, *sep_l;
 	line_list *head_l, *line_l;
 	int count;
-
+	
 	head_l = NULL;
 	head_s = NULL;
 	addNode(&head_s, &head_l, input);
