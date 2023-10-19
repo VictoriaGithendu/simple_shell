@@ -59,6 +59,5 @@ void run_shell(data_shell *data_struct)
 	}
 	{
 		continue_loop = 0;
-		free(input);
 	}
 }

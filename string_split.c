@@ -73,7 +73,7 @@ void move_to_nxt(sep_list **sep_l, line_list **line_l, data_shell *data_struct)
 	int continue_loop;
 	sep_list *sep_node;
 	line_list *line_node;
-	
+
 	continue_loop = 1;
 	sep_node = *sep_l;
 	line_node = *line_l;
@@ -151,7 +151,7 @@ int execute_commands(data_shell *data_struct, char *input)
 	sep_list *head_s, *sep_l;
 	line_list *head_l, *line_l;
 	int count;
-	
+
 	head_l = NULL;
 	head_s = NULL;
 	addNode(&head_s, &head_l, input);
