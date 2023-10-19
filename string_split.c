@@ -1,44 +1,5 @@
 #include "main.h"
 /**
- * splitLine - function that tokenizes a string input
- * @input: string input to tokenize
- * Return: token array
- */
-char **splitLine(char *input)
-{
-	size_t token_size;
-	size_t x = 0;
-	char **tokens;
-	char *token;
-
-	token_size = TOK_BUFSIZE;
-	tokens = malloc(sizeof(char *) * (token_size));
-	if (tokens == NULL)
-	{
-		write(STDERR_FILENO, ": allocation error\n", 18);
-		exit(EXIT_FAILURE);
-	}
-	token = strTok(input, TOK_DELIM);
-	tokens[0]  = token;
-
-	for (x = 1; token != NULL; x++)
-	{
-		if (x == token_size)
-		{
-			token_size += TOK_BUFSIZE;
-			tokens = reAllocDp(tokens, x, sizeof(char *)  * token_size);
-			if (tokens == NULL)
-			{
-				write(STDERR_FILENO, ": allocation error\n", 18);
-				exit(EXIT_FAILURE);
-			}
-		}
-		token = strTok(NULL, TOK_DELIM);
-		tokens[x] = token;
-	}
-	return (tokens);
-}
-/**
  * swap_special_chars - function to swap special characters
  * @input: string input
  * @bool: swapping flag
@@ -133,6 +94,45 @@ void move_to_nxt(sep_list **sep_l, line_list **line_l, data_shell *data_struct)
 		sep_node = sep_node->next;
 }
 /**
+ * splitLine - function that tokenizes a string input
+ * @input: string input to tokenize
+ * Return: token array
+ */
+char **splitLine(char *input)
+{
+	size_t token_size;
+	size_t x = 0;
+	char **tokens;
+	char *token;
+
+	token_size = TOK_BUFSIZE;
+	tokens = malloc(sizeof(char *) * (token_size));
+	if (tokens == NULL)
+	{
+		write(STDERR_FILENO, ": allocation error\n", 18);
+		exit(EXIT_FAILURE);
+	}
+	token = strTok(input, TOK_DELIM);
+	tokens[0]  = token;
+
+	for (x = 1; token != NULL; x++)
+	{
+		if (x == token_size)
+		{
+			token_size += TOK_BUFSIZE;
+			tokens = reAllocDp(tokens, x, sizeof(char *)  * token_size);
+			if (tokens == NULL)
+			{
+				write(STDERR_FILENO, ": allocation error\n", 18);
+				exit(EXIT_FAILURE);
+			}
+		}
+		token = strTok(NULL, TOK_DELIM);
+		tokens[x] = token;
+	}
+	return (tokens);
+}
+/**
  * execute_commands - function that execute command lines separated by ;, |, &
  * @data_struct: relevant data
  * @input: string input
@@ -144,10 +144,11 @@ int execute_commands(data_shell *data_struct, char *input)
 	line_list *head_l, *line_l;
 	int count;
 
+	head_l = NULL;
+	head_s = NULL;
 	addNode(&head_s, &head_l, input);
 	sep_l = head_s;
 	line_l = head_l;
-	count = 1;
 	while (line_l != NULL)
 	{
 		data_struct->input = line_l->line;
