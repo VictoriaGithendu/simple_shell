@@ -38,7 +38,7 @@ void run_shell(data_shell *data_struct)
 {
 	int continue_loop, i_eof;
 	char *input;
-	
+
 	continue_loop = 1;
 	while (continue_loop == 1)
 	{
