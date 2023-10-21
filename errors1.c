@@ -1,201 +1,144 @@
 #include "main.h"
 
 /**
- * is_cdir - function that checks current directory for ":"
- * @path: pointer to the directory path
- * @i: indes pointer
- * Return: 1 on success, otherwise 0
+ * strcat_cd - function to join cd error message
+ * @datash: stucture for data containing argument variables
+ * @msg: information to be displayed
+ * @error: display message
+ * @ver_str: line counter
+ * Return: the error message
  */
-int is_cdir(char *path, int *i)
+ 
+char *strcat_cd(data_shell *datash, char *msg, char *error, char *ver_str)
 {
-	if (path[*i] == ':')
-		return (1);
+	char *illegal_flag;
 
-	while (path[*i] != ':' && path[*i])
+	_strcpy(error, datash->av[0]);
+	_strcat(error, ": ");
+	_strcat(error, ver_str);
+	_strcat(error, ": ");
+	_strcat(error, datash->args[0]);
+	_strcat(error, msg);
+	if (datash->args[1][0] == '-')
 	{
-		*i += 1;
+		illegal_flag = malloc(3);
+		illegal_flag[0] = '-';
+		illegal_flag[1] = datash->args[1][1];
+		illegal_flag[2] = '\0';
+		_strcat(error, illegal_flag);
+		free(illegal_flag);
+	}
+	else
+	{
+		_strcat(error, datash->args[1]);
 	}
 
-	if (path[*i])
-		*i += 1;
-
-	return (0);
+	_strcat(error, "\n");
+	_strcat(error, "\0");
+	return (error);
 }
 
 /**
- * _which - function to check for a command
- * @cmd: poiner to name of command
- * @_environ: double pointer to environment variable
- * Return: NULL
+ * error_get_cd - function to display cd error message in get_cd
+ * @datash: stucture for data containing argument variables
+ * Return: displays error message
  */
-char *_which(char *cmd, char **_environ)
+ 
+char *error_get_cd(data_shell *datash)
 {
-	char *path, *ptr_path, *token_path, *dir;
-	int len_dir, len_cmd, i;
-	struct stat st;
+	int length, len_id;
+	char *error, *ver_str, *msg;
 
-	path = _getenv("PATH", _environ);
-	if (path)
+	ver_str = aux_itoa(datash->counter);
+	if (datash->args[1][0] == '-')
 	{
-		ptr_path = _strdup(path);
-		len_cmd = _strlen(cmd);
-		token_path = _strtok(ptr_path, ":");
-		i = 0;
-		while (token_path != NULL)
-		{
-			if (is_cdir(path, &i))
-				if (stat(cmd, &st) == 0)
-					return (cmd);
-			len_dir = _strlen(token_path);
-			dir = malloc(len_dir + len_cmd + 2);
-			_strcpy(dir, token_path);
-			_strcat(dir, "/");
-			_strcat(dir, cmd);
-			_strcat(dir, "\0");
-			if (stat(dir, &st) == 0)
-			{
-				free(ptr_path);
-				return (dir);
-			}
-			free(dir);
-			token_path = _strtok(NULL, ":");
-		}
-		free(ptr_path);
-		if (stat(cmd, &st) == 0)
-			return (cmd);
+		msg = ": Illegal option ";
+		len_id = 2;
+	}
+	else
+	{
+		msg = ": can't cd to ";
+		len_id = _strlen(datash->args[1]);
+	}
+
+	length = _strlen(datash->av[0]) + _strlen(datash->args[0]);
+	length += _strlen(ver_str) + _strlen(msg) + len_id + 5;
+	error = malloc(sizeof(char) * (length + 1));
+
+	if (error == 0)
+	{
+		free(ver_str);
 		return (NULL);
 	}
-	if (cmd[0] == '/')
-		if (stat(cmd, &st) == 0)
-			return (cmd);
-	return (NULL);
+
+	error = strcat_cd(datash, msg, error, ver_str);
+
+	free(ver_str);
+
+	return (error);
 }
 
 /**
- * is_executable - function to check if a command is executable
+ * error_not_found - function for the case - error not found
  * @datash: stucture for data containing argument variables
- * Return: 0 if unsuccessful otherwise any number
+ * Return: displays error message
  */
-int is_executable(data_shell *datash)
+char *error_not_found(data_shell *datash)
 {
-	struct stat st;
-	int i;
-	char *input;
+	int length;
+	char *error;
+	char *ver_str;
 
-	input = datash->args[0];
-	for (i = 0; input[i]; i++)
+	ver_str = aux_itoa(datash->counter);
+	length = _strlen(datash->av[0]) + _strlen(ver_str);
+	length += _strlen(datash->args[0]) + 16;
+	error = malloc(sizeof(char) * (length + 1));
+	if (error == 0)
 	{
-		if (input[i] == '.')
-		{
-			if (input[i + 1] == '.')
-				return (0);
-			if (input[i + 1] == '/')
-				continue;
-			else
-				break;
-		}
-		else if (input[i] == '/' && i != 0)
-		{
-			if (input[i + 1] == '.')
-				continue;
-			i++;
-			break;
-		}
-		else
-			break;
+		free(error);
+		free(ver_str);
+		return (NULL);
 	}
-	if (i == 0)
-		return (0);
-
-	if (stat(input + i, &st) == 0)
-	{
-		return (i);
-	}
-	get_error(datash, 127);
-	return (-1);
+	_strcpy(error, datash->av[0]);
+	_strcat(error, ": ");
+	_strcat(error, ver_str);
+	_strcat(error, ": ");
+	_strcat(error, datash->args[0]);
+	_strcat(error, ": not found\n");
+	_strcat(error, "\0");
+	free(ver_str);
+	return (error);
 }
 
 /**
- * check_error_cmd - function to check if user has access permission
- * @dir: pointer to destination
+ * error_exit_shell - function for error message in get_exit
  * @datash: stucture for data containing argument variables
- * Return: 0 on success, otherwise 1
+ * Return: displays error message
  */
-int check_error_cmd(char *dir, data_shell *datash)
+char *error_exit_shell(data_shell *datash)
 {
-	if (dir == NULL)
-	{
-		get_error(datash, 127);
-		return (1);
-	}
+	int length;
+	char *error;
+	char *ver_str;
 
-	if (_strcmp(datash->args[0], dir) != 0)
+	ver_str = aux_itoa(datash->counter);
+	length = _strlen(datash->av[0]) + _strlen(ver_str);
+	length += _strlen(datash->args[0]) + _strlen(datash->args[1]) + 23;
+	error = malloc(sizeof(char) * (length + 1));
+	if (error == 0)
 	{
-		if (access(dir, X_OK) == -1)
-		{
-			get_error(datash, 126);
-			free(dir);
-			return (1);
-		}
-		free(dir);
+		free(ver_str);
+		return (NULL);
 	}
-	else
-	{
-		if (access(datash->args[0], X_OK) == -1)
-		{
-			get_error(datash, 126);
-			return (1);
-		}
-	}
+	_strcpy(error, datash->av[0]);
+	_strcat(error, ": ");
+	_strcat(error, ver_str);
+	_strcat(error, ": ");
+	_strcat(error, datash->args[0]);
+	_strcat(error, ": Illegal number: ");
+	_strcat(error, datash->args[1]);
+	_strcat(error, "\n\0");
+	free(ver_str);
 
-	return (0);
-}
-
-/**
- * cmd_exec - function to execute commands
- * @datash: stucture for data containing argument variables
- * Return: 1 on success.
- */
-int cmd_exec(data_shell *datash)
-{
-	pid_t pd;
-	pid_t wpd;
-	int state;
-	int exec;
-	char *dir;
-	(void) wpd;
-
-	exec = is_executable(datash);
-	if (exec == -1)
-		return (1);
-	if (exec == 0)
-	{
-		dir = _which(datash->args[0], datash->_environ);
-		if (check_error_cmd(dir, datash) == 1)
-			return (1);
-	}
-
-	pd = fork();
-	if (pd == 0)
-	{
-		if (exec == 0)
-			dir = _which(datash->args[0], datash->_environ);
-		else
-			dir = datash->args[0];
-		execve(dir + exec, datash->args, datash->_environ);
-	}
-	else if (pd < 0)
-	{
-		perror(datash->av[0]);
-		return (1);
-	}
-	else
-	{
-		do {
-			wpd = waitpid(pd, &state, WUNTRACED);
-		} while (!WIFEXITED(state) && !WIFSIGNALED(state));
-	}
-
-	datash->status = state / 256;
-	return (1);
+	return (error);
 }
