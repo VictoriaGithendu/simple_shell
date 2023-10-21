@@ -1,10 +1,10 @@
 #include "main.h"
 /**
- * handle_sigint - handle the crtl + c signal in prompt
- * @signal: signal number
+ * get_sigint - function that finds prompt crtl + c call
+ * @sig: Signal handler
  */
-void handle_sigint(int signal)
+void get_sigint(int sig)
 {
-	(void)signal;
+	(void)sig;
 	write(STDOUT_FILENO, "\n^-^ ", 5);
 }

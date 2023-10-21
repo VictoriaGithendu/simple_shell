@@ -1,117 +1,113 @@
 #include "main.h"
 /**
- * dup_inf - duplicates info to create new env or aliaas
- * @cmd_name: name
- * @cmd_value: value
- * Return: new env or alias.
+ * copy_info - function that copies provided information
+ * @name:  new environment or alias name to create
+ * @value: new environment or alias value
+ * Return: new created environment variable or alias.
  */
-char *dup_inf(char *cmd_name, char *cmd_value)
+char *copy_info(char *name, char *value)
 {
-	char *new_value;
+	char *new;
 	int length_name, length_value, length;
 
-	length_name = strLength(cmd_name);
-	length_value = strLength(cmd_value);
+	length_name = _strlen(name);
+	length_value = _strlen(value);
 	length = length_name + length_value + 2;
-	new_value = malloc(sizeof(char) * (length));
-	strCpy(new_value, cmd_name);
-	strCat(new_value, "=");
-	strCat(new_value, cmd_value);
-	strCat(new_value, "\0");
-
-	return (new_value);
+	new = malloc(sizeof(char) * (length));
+	_strcpy(new, name);
+	_strcat(new, "=");
+	_strcat(new, value);
+	_strcat(new, "\0");
+	return (new);
 }
 /**
- * _setenviron - sets an environment variable
- * @cmd_name: environment variable name
- * @cmd_value: environment variable value
- * @data_struct: data structure (environ)
+ * set_env - function that sets an environ variable and assigns a value
+ * @name: environment variable name to set
+ * @value: environment variable   value to assign
+ * @datash: data structure
  * Return: no return
  */
-void _setenviron(char *cmd_name, char *cmd_value, data_shell *data_struct)
+void set_env(char *name, char *value, data_shell *datash)
 {
 	int x;
-	char *environ_var, *environ_name;
+	char *var_env, *name_env;
 
-	for (x = 0; data_struct->_environ[x]; x++)
+	for (x = 0; datash->_environ[x]; x++)
 	{
-		environ_var = strDup(data_struct->_environ[x]);
-		environ_name = strTok(environ_var, "=");
-		if (strCmp(environ_name, cmd_name) == 0)
+		var_env = _strdup(datash->_environ[x]);
+		name_env = _strtok(var_env, "=");
+		if (_strcmp(name_env, name) == 0)
 		{
-			free(data_struct->_environ[x]);
-			data_struct->_environ[x] = dup_inf(environ_name, cmd_value);
-			free(environ_var);
+			free(datash->_environ[i]);
+			datash->_environ[i] = copy_info(name_env, value);
+			free(var_env);
 			return;
 		}
-		free(environ_var);
+		free(var_env);
 	}
-
-	data_struct->_environ = reAllocDp(data_struct->_environ,
-			x, sizeof(char *) * (x + 2));
-	data_struct->_environ[x] = dup_inf(cmd_name, cmd_value);
-	data_struct->_environ[x + 1] = NULL;
+	datash->_environ = _reallocdp(datash->_environ, i, sizeof(char *) * (i + 2));
+	datash->_environ[i] = copy_info(name, value);
+	datash->_environ[i + 1] = NULL;
 }
 /**
- * _set_environ - function that compares env variables names
- * @data_struct: data
+ * _setenv - function that compares environment variables names
+ * @datash: data structure
  * Return: 1 on success.
  */
-int _set_environ(data_shell *data_struct)
+int _setenv(data_shell *datash)
 {
-
-	if (data_struct->args[1] == NULL || data_struct->args[2] == NULL)
+	if (datash->args[1] == NULL || datash->args[2] == NULL)
 	{
-		handle_error(data_struct, -1);
+		get_error(datash, -1);
 		return (1);
 	}
-	_setenviron(data_struct->args[1], data_struct->args[2], data_struct);
+	set_env(datash->args[1], datash->args[2], datash);
 	return (1);
 }
 /**
- * _unset_environ - function that deletes environment variable
- * @data_struct: data relevant
+ * _unsetenv - function that deletes environment variable
+ * @datash: data structure
  * Return: 1 on success.
  */
-int _unset_environ(data_shell *data_struct)
+int _unsetenv(data_shell *datash)
 {
 	char **realloc_environ;
-	char *environ_var, *environ_name;
+	char *var_env, *name_env;
 	int x, y, z;
 
-	if (data_struct->args[1] == NULL)
+	if (datash->args[1] == NULL)
 	{
-		handle_error(data_struct, -1);
+		get_error(datash, -1);
 		return (1);
 	}
 	z = -1;
-	for (x = 0; data_struct->_environ[x]; x++)
+	for (x = 0; datash->_environ[x]; x++)
 	{
-		environ_var = strDup(data_struct->_environ[x]);
-		environ_name = strTok(environ_var, "=");
-		if (strCmp(environ_name, data_struct->args[1]) == 0)
+		var_env = _strdup(datash->_environ[x]);
+		name_env = _strtok(var_env, "=");
+		if (_strcmp(name_env, datash->args[1]) == 0)
 		{
 			z = x;
 		}
-		free(environ_var);
+		free(var_env);
 	}
 	if (z == -1)
 	{
-		handle_error(data_struct, -1);
+		get_error(datash, -1);
 		return (1);
 	}
 	realloc_environ = malloc(sizeof(char *) * (x));
-	for (x = y = 0; data_struct->_environ[x]; x++)
+	for (x = y = 0; datash->_environ[x]; x++)
 	{
 		if (x != z)
 		{
-			realloc_environ[y] = data_struct->_environ[x];
+			realloc_environ[j] = datash->_environ[x];
 			y++;
 		}
 	}
 	realloc_environ[y] = NULL;
-	free(data_struct->_environ[z]);
-	free(data_struct->_environ);
-	data_struct->_environ = realloc_environ;
+	free(datash->_environ[z]);
+	free(datash->_environ);
+	datash->_environ = realloc_environ;
 	return (1);
 }

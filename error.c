@@ -1,37 +1,37 @@
 #include "main.h"
 /**
- * handle_error - handles error according the builtin
- * @data_struct: data structure containing arguments
- * @err_val: error value code
+ * get_error - checks builtin, syntax and permission error
+ * @datash: data structure
+ * @eval: error value found
  * Return: error
  */
-int handle_error(data_shell *data_struct, int err_val)
+int get_error(data_shell *datash, int eval)
 {
-	char *err;
+	char *error;
 
-	switch (err_val)
+	switch (eval)
 	{
 	case -1:
-		err = errorEnv(data_struct);
+		error = error_env(datash);
 		break;
 	case 126:
-		err = errorPath(data_struct);
+		error = error_path_126(datash);
 		break;
 	case 127:
-		err = errorNotFound(data_struct);
+		error = error_not_found(datash);
 		break;
 	case 2:
-		if (strCmp("exit", data_struct->args[0]) == 0)
-			err = errorExitShell(data_struct);
-		else if (strCmp("cd", data_struct->args[0]) == 0)
-			err = getCdError(data_struct);
+		if (_strcmp("exit", datash->args[0]) == 0)
+			error = error_exit_shell(datash);
+		else if (_strcmp("cd", datash->args[0]) == 0)
+			error = error_get_cd(datash);
 		break;
 	}
-	if (err)
+	if (error)
 	{
-		write(STDERR_FILENO, err, strLength(err));
-		free(err);
+		write(STDERR_FILENO, error, _strlen(error));
+		free(error);
 	}
-	data_struct->status = err_val;
-	return (err_val);
+	datash->status = eval;
+	return (eval);
 }

@@ -1,63 +1,61 @@
 #include "main.h"
 /**
- * release_data_structure - frees data structure memory
- * @data_struct: data structure to be released
+ * free_data - function that releases data structure
+ * @datash: data structure
  * Return: no return
  */
-void release_data_structure(data_shell *data_struct)
+void free_data(data_shell *datash)
 {
 	unsigned int x;
 
-	for (x = 0; data_struct->_environ[x]; x++)
+	for (x = 0; datash->_environ[x]; x++)
 	{
-		free(data_struct->_environ[x]);
+		free(datash->_environ[x]);
 	}
-	free(data_struct->_environ);
-	free(data_struct->pid);
+	free(datash->_environ);
+	free(datash->pid);
 }
 /**
- * init_data_structure - Initialize data structure with given arguements
- * @data_struct: data structure
- * @arguement_vector: argument vector
+ * set_data - function that begins data structure
+ * @datash: data structure
+ * @av: arg vector
  * Return: no return
  */
-void init_data_structure(data_shell *data_struct, char **arguement_vector)
+void set_data(data_shell *datash, char **av)
 {
 	unsigned int x;
 
-	data_struct->av = arguement_vector;
-	data_struct->input = NULL;
-	data_struct->args = NULL;
-	data_struct->status = 0;
-	data_struct->counter = 1;
-
+	datash->av = av;
+	datash->input = NULL;
+	datash->args = NULL;
+	datash->status = 0;
+	datash->counter = 1;
 	for (x = 0; environ[x]; x++)
 		;
-	data_struct->_environ = malloc(sizeof(char *) * (x + 1));
-
+	datash->_environ = malloc(sizeof(char *) * (x + 1));
 	for (x = 0; environ[x]; x++)
 	{
-		data_struct->_environ[x] = strDup(environ[x]);
+		datash->_environ[x] = _strdup(environ[x]);
 	}
-	data_struct->_environ[x] = NULL;
-	data_struct->pid = iToA(getpid());
+	datash->_environ[x] = NULL;
+	datash->pid = aux_itoa(getpid());
 }
 /**
- * main - entry point
- * @arguement_count: argument count
- * @arguement_vector: argument vector
+ * main - Shell entry point
+ * @ac: arg count
+ * @av: arg vector
  * Return: 0 on success.
  */
-int main(int arguement_count, char **arguement_vector)
+int main(int ac, char **av)
 {
-	data_shell data_struct;
-	(void) arguement_count;
+	data_shell datash;
+	(void) ac;
 
-	signal(SIGINT, handle_sigint);
-	init_data_structure(&data_struct, arguement_vector);
-	run_shell(&data_struct);
-	release_data_structure(&data_struct);
-	if (data_struct.status < 0)
+	signal(SIGINT, get_sigint);
+	set_data(&datash, av);
+	shell_loop(&datash);
+	free_data(&datash);
+	if (datash.status < 0)
 		return (255);
-	return (data_struct.status);
+	return (datash.status);
 }

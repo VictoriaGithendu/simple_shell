@@ -1,70 +1,69 @@
 #include "main.h"
 /**
- * remove_comments - function that removes comments from input string
- * @input: string input
+ * without_comment - function that removes input comments
+ * @in: input string
  * Return: input without comments
  */
-char *remove_comments(char *input)
+char *without_comment(char *in)
 {
-	int x, y;
+	int x, up_to;
 
-	y = 0;
-	for (x = 0; input[x]; x++)
+	up_to = 0;
+	for (x = 0; in[x]; x++)
 	{
-		if (input[x] == '#')
+		if (in[x] == '#')
 		{
 			if (x == 0)
 			{
-				free(input);
+				free(in);
 				return (NULL);
 			}
-			if (input[x - 1] == ' ' || input[x - 1] == '\t' || input[x - 1] == ';')
-				y = x;
+			if (in[x - 1] == ' ' || in[x - 1] == '\t' || in[x - 1] == ';')
+				up_to = x;
 		}
 	}
-	if (y != 0)
+	if (up_to != 0)
 	{
-		input = reAlloc(input, x, y + 1);
-		input[y] = '\0';
+		in = _realloc(in, x, up_to + 1);
+		in[up_to] = '\0';
 	}
-	return (input);
+	return (in);
 }
 /**
- * run_shell - function that runs shell loop
- * @data_struct: relevant data
- * Return: 0
+ * shell_loop - function that loops shell
+ * @datash: data structure
+ * Return: no return.
  */
-void run_shell(data_shell *data_struct)
+void shell_loop(data_shell *datash)
 {
-	int continue_loop, i_eof;
+	int loop, i_eof;
 	char *input;
 
-	continue_loop = 1;
-	while (continue_loop == 1)
+	loop = 1;
+	while (loop == 1)
 	{
 		write(STDIN_FILENO, "^-^ ", 4);
-		input = read_input_line(&i_eof);
+		input = read_line(&i_eof);
 		if (i_eof != -1)
 		{
-			input = remove_comments(input);
-		if (input == NULL)
-			continue;
-		if (checkSyntaxError(data_struct, input) == 1)
-		{
-			data_struct->status = 2;
+			input = without_comment(input);
+			if (input == NULL)
+				continue;
+			if (check_syntax_error(datash, input) == 1)
+			{
+				datash->status = 2;
+				free(input);
+				continue;
+			}
+			input = rep_var(input, datash);
+			loop = split_commands(datash, input);
+			datash->counter += 1;
 			free(input);
-			continue;
 		}
-		input = rep_str_var(input, data_struct);
-		continue_loop = execute_commands(data_struct, input);
-		data_struct->counter += 1;
-		free(input);
+		else
+		{
+			loop = 0;
+			free(input);
 		}
-	else
-	{
-		continue_loop = 0;
-		free(input);
-	}
 	}
 }
-

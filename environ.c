@@ -1,17 +1,17 @@
 #include "main.h"
 /**
- * cmp_environ_var - compares env variables names
- * @environ_var: name of the environment variable
- * @envname: name passed
- * Return: 0 if are not equal
+ * cmp_env_name - function that checks equal  name of environment variables
+ * @nenv: environment variable name to  compare
+ * @name: name to compare against
+ * Return: 0 on failure
  */
-int cmp_environ_var(const char *environ_var, const char *envname)
+int cmp_env_name(const char *nenv, const char *name)
 {
 	int x;
 
-	for (x = 0; environ_var[x] != '='; x++)
+	for (x = 0; nenv[x] != '='; x++)
 	{
-		if (environ_var[x] != envname[x])
+		if (nenv[x] != name[x])
 		{
 			return (0);
 		}
@@ -19,47 +19,46 @@ int cmp_environ_var(const char *environ_var, const char *envname)
 	return (x + 1);
 }
 /**
- * get_environ - function that gets an environment variable
- * @envname: environment variable name
- * @environ_var: environment variable
- * Return: environment variable value
+ * _getenv - function that retrieves environment variable value
+ * @name: environment variable name to retrieve
+ * @_environ: environment variable list
+ * Return: environment variable value  found.
  */
-char *get_environ(const char *envname, char **environ_var)
+char *_getenv(const char *name, char **_environ)
 {
-	char *ptr;
-	int x, y;
+	char *ptr_env;
+	int x, mov;
 
-	ptr = NULL;
-	y = 0;
+	ptr_env = NULL;
+	mov = 0;
 
-	for (x = 0; environ_var[x]; x++)
+	for (x = 0; _environ[x]; x++)
 	{
-		y = cmp_environ_var(environ_var[x], envname);
-		if (y)
+		mov = cmp_env_name(_environ[x], name);
+		if (mov)
 		{
-			ptr = environ_var[x];
+			ptr_env = _environ[i];
 			break;
 		}
 	}
-	return (ptr + y);
+	return (ptr_env + mov);
 }
 /**
- * print_environ -function that prints the evironment variables
- * @data_struct: data
+ * _env - function that prints relevant data to the evironment variables
+ * @datash: relevant environment variables data.
  * Return: 1 on success.
  */
-int print_environ(data_shell *data_struct)
+int _env(data_shell *datash)
 {
 	int x, y;
 
-	for (x = 0; data_struct->_environ[x]; x++)
+	for (x = 0; datash->_environ[x]; x++)
 	{
-		for (y = 0; data_struct->_environ[x][y]; y++)
+		for (y = 0; datash->_environ[x][y]; y++)
 			;
-		write(STDOUT_FILENO, data_struct->_environ[x], y);
+		write(STDOUT_FILENO, datash->_environ[x], y);
 		write(STDOUT_FILENO, "\n", 1);
 	}
-	data_struct->status = 0;
-
+	datash->status = 0;
 	return (1);
 }

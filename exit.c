@@ -1,29 +1,29 @@
 #include "main.h"
 /**
- * exit_shell - function that exits the shell
- * @data_struct: data relevant
+ * exit_shell - function that exits shell
+ * @datash: data structure
  * Return: 0 on success.
  */
-int exit_shell(data_shell *data_struct)
+int exit_shell(data_shell *datash)
 {
-	unsigned int ustat;
-	int digit;
+	unsigned int ustatus;
+	int isDigit;
 	int str_length;
-	int max_no;
+	int max_number;
 
-	if (data_struct->args[1] != NULL)
+	if (datash->args[1] != NULL)
 	{
-		ustat = aToI(data_struct->args[1]);
-		digit = isDigit(data_struct->args[1]);
-		str_length = strLength(data_struct->args[1]);
-		max_no = ustat > (unsigned int)INT_MAX;
-		if (!digit || str_length > 10 || max_no)
+		ustatus = _atoi(datash->args[1]);
+		isDigit = _isdigit(datash->args[1]);
+		str_length = _strlen(datash->args[1]);
+		max_number = ustatus > (unsigned int)INT_MAX;
+		if (!is_digit || str_length > 10 || max_number)
 		{
-			handle_error(data_struct, 2);
-			data_struct->status = 2;
+			get_error(datash, 2);
+			datash->status = 2;
 			return (1);
 		}
-		data_struct->status = (ustat % 256);
+		datash->status = (ustatus % 256);
 	}
 	return (0);
 }
