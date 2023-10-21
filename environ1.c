@@ -115,4 +115,3 @@ int _unset_environ(data_shell *data_struct)
 	data_struct->_environ = realloc_environ;
 	return (1);
 }
-

@@ -36,28 +36,35 @@ char *remove_comments(char *input)
  */
 void run_shell(data_shell *data_struct)
 {
-	int continue_loop = 1;
-	int i_eof;
+	int continue_loop, i_eof;
 	char *input;
-
+	
+	continue_loop = 1;
 	while (continue_loop == 1)
 	{
 		write(STDIN_FILENO, "^-^ ", 4);
 		input = read_input_line(&i_eof);
 		if (i_eof != -1)
+		{
 			input = remove_comments(input);
 		if (input == NULL)
 			continue;
 		if (checkSyntaxError(data_struct, input) == 1)
 		{
 			data_struct->status = 2;
+			free(input);
+			continue;
 		}
 		input = rep_str_var(input, data_struct);
 		continue_loop = execute_commands(data_struct, input);
 		data_struct->counter += 1;
 		free(input);
-	}
+		}
+	else
 	{
 		continue_loop = 0;
+		free(input);
+	}
 	}
 }
+

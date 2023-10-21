@@ -1,7 +1,7 @@
 #include "main.h"
 /**
- * handle_sigint - Handle the crtl + c signal in prompt
- * @signal: Signal number
+ * handle_sigint - handle the crtl + c signal in prompt
+ * @signal: signal number
  */
 void handle_sigint(int signal)
 {
