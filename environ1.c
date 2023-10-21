@@ -38,16 +38,16 @@ void set_env(char *name, char *value, data_shell *datash)
 		name_env = _strtok(var_env, "=");
 		if (_strcmp(name_env, name) == 0)
 		{
-			free(datash->_environ[i]);
-			datash->_environ[i] = copy_info(name_env, value);
+			free(datash->_environ[x]);
+			datash->_environ[x] = copy_info(name_env, value);
 			free(var_env);
 			return;
 		}
 		free(var_env);
 	}
-	datash->_environ = _reallocdp(datash->_environ, i, sizeof(char *) * (i + 2));
-	datash->_environ[i] = copy_info(name, value);
-	datash->_environ[i + 1] = NULL;
+	datash->_environ = _reallocdp(datash->_environ, x, sizeof(char *) * (x + 2));
+	datash->_environ[x] = copy_info(name, value);
+	datash->_environ[x + 1] = NULL;
 }
 /**
  * _setenv - function that compares environment variables names
@@ -101,7 +101,7 @@ int _unsetenv(data_shell *datash)
 	{
 		if (x != z)
 		{
-			realloc_environ[j] = datash->_environ[x];
+			realloc_environ[y] = datash->_environ[x];
 			y++;
 		}
 	}

@@ -37,7 +37,7 @@ char *_getenv(const char *name, char **_environ)
 		mov = cmp_env_name(_environ[x], name);
 		if (mov)
 		{
-			ptr_env = _environ[i];
+			ptr_env = _environ[x];
 			break;
 		}
 	}

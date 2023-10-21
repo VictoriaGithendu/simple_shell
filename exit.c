@@ -17,7 +17,7 @@ int exit_shell(data_shell *datash)
 		isDigit = _isdigit(datash->args[1]);
 		str_length = _strlen(datash->args[1]);
 		max_number = ustatus > (unsigned int)INT_MAX;
-		if (!is_digit || str_length > 10 || max_number)
+		if (!isDigit || str_length > 10 || max_number)
 		{
 			get_error(datash, 2);
 			datash->status = 2;
