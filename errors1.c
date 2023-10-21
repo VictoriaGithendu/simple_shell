@@ -8,7 +8,7 @@
  * @ver_str: line counter
  * Return: the error message
  */
- 
+
 char *strcat_cd(data_shell *datash, char *msg, char *error, char *ver_str)
 {
 	char *illegal_flag;
@@ -43,7 +43,7 @@ char *strcat_cd(data_shell *datash, char *msg, char *error, char *ver_str)
  * @datash: stucture for data containing argument variables
  * Return: displays error message
  */
- 
+
 char *error_get_cd(data_shell *datash)
 {
 	int length, len_id;
