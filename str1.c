@@ -1,108 +1,106 @@
 #include "main.h"
 
 /**
- * strCat - function to joint two strings
+ * _strcat - function to joint two strings
  * @dest: pointer to destination of the copied string
  * @src: pointer to string to be joined to another
  * Return: the destination
  */
-
-char *strCat(char *dest, const char *src)
+char *_strcat(char *dest, const char *src)
 {
-int cnt, cnt1;
-for (cnt = 0; dest[cnt] != '\0'; cnt++)
-;
-for (cnt1 = 0; src[cnt1] != '\0'; cnt1++)
-{
-dest[cnt] = src[cnt1];
-cnt++;
-}
-dest[cnt] = '\0';
-return (dest);
-}
+	int i;
+	int j;
 
+	for (i = 0; dest[i] != '\0'; i++)
+		;
 
+	for (j = 0; src[j] != '\0'; j++)
+	{
+		dest[i] = src[j];
+		i++;
+	}
+
+	dest[i] = '\0';
+	return (dest);
+}
 /**
- * *strCpy - function to copy a tring from one location to another
+ * *_strcpy - function to copy a tring from one location to another
  * @dest: pointer to the location the string will be copied to
  * @src: string to be copied
  * Return: the destination
  */
-
-char *strCpy(char *dest, char *src)
+char *_strcpy(char *dest, char *src)
 {
-size_t cnt;
-for (cnt = 0; src[cnt] != '\0'; cnt++)
-{
-dest[cnt] = src[cnt];
-}
-dest[cnt] = '\0';
-return (dest);
-}
 
+	size_t a;
 
+	for (a = 0; src[a] != '\0'; a++)
+	{
+		dest[a] = src[a];
+	}
+	dest[a] = '\0';
+
+	return (dest);
+}
 /**
- * strCmp - function to check similarity of two strings
- * @str1: first string for comparison
- * @str2: second string for comparison
+ * _strcmp - function to check similarity of two strings
+ * @s1: first string for comparison
+ * @s2: second string for comparison
  * Return: zero on success.
  */
-
-int strCmp(char *str1, char *str2)
+int _strcmp(char *s1, char *s2)
 {
-int cnt;
-for (cnt = 0; str1[cnt] == str2[cnt] && str1[cnt]; cnt++)
-;
-if (str1[cnt] > str2[cnt])
-return (1);
-if (str1[cnt] < str2[cnt])
-return (-1);
-return (0);
+	int i;
+
+	for (i = 0; s1[i] == s2[i] && s1[i]; i++)
+		;
+
+	if (s1[i] > s2[i])
+		return (1);
+	if (s1[i] < s2[i])
+		return (-1);
+	return (0);
 }
-
-
 /**
- * strChr - function to find a charater in a string
- * @str: the string to be checked into
- * @chr: character to be located
- * Return: pointer to character to be searched
+ * _strchr - function to find a charater in a string
+ * @s: the string to be checked into
+ * @c: character to be located
+ * Return:  pointer to character to be searched
  */
-
-char *strChr(char *str, char chr)
+char *_strchr(char *s, char c)
 {
-unsigned int cnt = 0;
-for (; *(str + cnt) != '\0'; cnt++)
-if (*(str + cnt) == chr)
-return (str + cnt);
-if (*(str + cnt) == chr)
-return (str + cnt);
-return ('\0');
+	unsigned int i = 0;
+
+	for (; *(s + i) != '\0'; i++)
+		if (*(s + i) == c)
+			return (s + i);
+	if (*(s + i) == c)
+		return (s + i);
+	return ('\0');
 }
-
-
 /**
- * strSpn - function to determine prefix substring's length
- * @str: previous string
- * @bytNum: amount of bytes to be copied
+ * _strspn - function to determine prefix substring's length
+ * @s: previous string
+ * @accept: amount of bytes to be copied
  * Return: accepted bytes
  */
+int _strspn(char *s, char *accept)
+{
+	int i, j, bool;
 
-int strSpn(char *str, char *bytNum)
-{
-int cnt, cnt1, bool;
-for (cnt = 0; *(str + cnt) != '\0'; cnt++)
-{
-bool = 1;
-for (cnt1 = 0; *(bytNum + cnt1) != '\0'; cnt1++)
-{
-if (*(str + cnt) == *(bytNum + cnt1))
-{
-bool = 0;
-break;
-}
-}
-if (bool == 1)
-break;
-}
-return (cnt);
+	for (i = 0; *(s + i) != '\0'; i++)
+	{
+		bool = 1;
+		for (j = 0; *(accept + j) != '\0'; j++)
+		{
+			if (*(s + i) == *(accept + j))
+			{
+				bool = 0;
+				break;
+			}
+		}
+		if (bool == 1)
+			break;
+	}
+	return (i);
 }

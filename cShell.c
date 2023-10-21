@@ -1,38 +1,43 @@
 #include "main.h"
 
 /**
- * cdShell - function that swithces to current directoy
- * @inf: stucture for data containing argument variables
- * Return: 1 if successful
+ * cd_shell - function that swithces to current directoy
+ * @datash: stucture for data containing argument variables
+ * Return:  1 if successful
  */
+int cd_shell(data_shell *datash)
+{
+	char *dir;
+	int ishome, ishome2, isddash;
 
-int cdShell(data_shell *inf)
-{
-char *inpt;
-int isHome, isHomeAlt, isDash;
-inpt = inf->args[1];
-if (inpt != NULL)
-{
-isHome = strCmp("$HOME", inpt);
-isHomeAlt = strCmp("~", inpt);
-isDash = strCmp("--", inpt);
-}
-if (inpt == NULL || !isHome || !isHomeAlt || !isDash)
-{
-cdHome(inf);
-return (1);
-}
-if (strCmp("-", inpt) == 0)
-{
-cdPrev(inf);
-return (1);
-}
-if (strCmp(".", inpt) == 0 || strCmp("..", inpt) == 0)
-{
-cdDot(inf);
-return (1);
-}
-cdTo(inf);
-return (1);
-}
+	dir = datash->args[1];
 
+	if (dir != NULL)
+	{
+		ishome = _strcmp("$HOME", dir);
+		ishome2 = _strcmp("~", dir);
+		isddash = _strcmp("--", dir);
+	}
+
+	if (dir == NULL || !ishome || !ishome2 || !isddash)
+	{
+		cd_to_home(datash);
+		return (1);
+	}
+
+	if (_strcmp("-", dir) == 0)
+	{
+		cd_previous(datash);
+		return (1);
+	}
+
+	if (_strcmp(".", dir) == 0 || _strcmp("..", dir) == 0)
+	{
+		cd_dot(datash);
+		return (1);
+	}
+
+	cd_to(datash);
+
+	return (1);
+}

@@ -1,57 +1,60 @@
 #include "main.h"
 
 /**
- * addVarNode - function to add a  variable at the end of a node
- * @nodHead: start of a linked list
- * @varLen: variable length
- * @varVal: variable value
- * @lenVal: value length
+ * add_rvar_node - function to add a  variable at the end of a node
+ * @head: start of a linked list
+ * @lvar: variable length
+ * @val: variable value
+ * @lval: value length
  * Return: pointer to the head
  */
+r_var *add_rvar_node(r_var **head, int lvar, char *val, int lval)
+{
+	r_var *new, *temp;
 
-r_var *addVarNode(r_var **nodHead, int varLen, char *varVal, int lenVal)
-{
-r_var *sepNew, *sepTemp;
-sepNew = malloc(sizeof(r_var));
-if (sepNew == NULL)
-return (NULL);
-sepNew->len_var = varLen;
-sepNew->val = varVal;
-sepNew->len_val = lenVal;
-sepNew->next = NULL;
-sepTemp = *nodHead;
-if (sepTemp == NULL)
-{
-*nodHead = sepNew;
-}
-else
-{
-while (sepTemp->next != NULL)
-sepTemp = sepTemp->next;
-sepTemp->next = sepNew;
-}
-return (*nodHead);
-}
+	new = malloc(sizeof(r_var));
+	if (new == NULL)
+		return (NULL);
 
+	new->len_var = lvar;
+	new->val = val;
+	new->len_val = lval;
+
+	new->next = NULL;
+	temp = *head;
+
+	if (temp == NULL)
+	{
+		*head = new;
+	}
+	else
+	{
+		while (temp->next != NULL)
+			temp = temp->next;
+		temp->next = new;
+	}
+
+	return (*head);
+}
 
 /**
- * freeVarList - function to free list
- * @nodHead: start point of a linked list
+ * free_rvar_list - function to free list
+ * @head: start point of a linked list
  * Return: nothing
  */
+void free_rvar_list(r_var **head)
+{
+	r_var *temp;
+	r_var *curr;
 
-void freeVarList(r_var **nodHead)
-{
-r_var *sepTemp;
-r_var *sepNew;
-if (nodHead != NULL)
-{
-sepNew = *nodHead;
-while ((sepTemp = sepNew) != NULL)
-{
-sepNew = sepNew->next;
-free(sepTemp);
-}
-*nodHead = NULL;
-}
+	if (head != NULL)
+	{
+		curr = *head;
+		while ((temp = curr) != NULL)
+		{
+			curr = curr->next;
+			free(temp);
+		}
+		*head = NULL;
+	}
 }

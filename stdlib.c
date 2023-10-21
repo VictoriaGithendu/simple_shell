@@ -1,96 +1,100 @@
 #include "main.h"
 
 /**
- * getLength - function to get a number's lenght
- * @num: the number who's length willl be determined
+ * get_len - function to get a number's lenght
+ * @n: the number who's length willl be determined
  * Return: the length of num
  */
+int get_len(int n)
+{
+	unsigned int n1;
+	int lenght = 1;
 
-int getLength(int num)
-{
-unsigned int numLen;
-int len = 1;
-if (num < 0)
-{
-len++;
-numLen = num * -1;
-}
-else
-{
-numLen = num;
-}
-while (numLen > 9)
-{
-len++;
-numLen = numLen / 10;
-}
-return (len);
-}
+	if (n < 0)
+	{
+		lenght++;
+		n1 = n * -1;
+	}
+	else
+	{
+		n1 = n;
+	}
+	while (n1 > 9)
+	{
+		lenght++;
+		n1 = n1 / 10;
+	}
 
-
+	return (lenght);
+}
 /**
- * iToA - function to convert number to string
- * @num: number to be converted
+ * aux_itoa - function to convert number to string
+ * @n: number to be converted
  * Return: a string
  */
+char *aux_itoa(int n)
+{
+	unsigned int n1;
+	int lenght = get_len(n);
+	char *buffer;
 
-char *iToA(int num)
-{
-unsigned int numLen;
-int len = getLength(num);
-char *buffr;
-buffr = malloc(sizeof(char) * (len + 1));
-if (buffr == 0)
-return (NULL);
-*(buffr + len) = '\0';
-if (num < 0)
-{
-numLen = num * -1;
-buffr[0] = '-';
-}
-else
-{
-numLen = num;
-}
-len--;
-do {
-*(buffr + len) = (numLen % 10) + '0';
-numLen = numLen / 10;
-len--;
-}
-while (numLen > 0)
-;
-return (buffr);
-}
+	buffer = malloc(sizeof(char) * (lenght + 1));
+	if (buffer == 0)
+		return (NULL);
 
+	*(buffer + lenght) = '\0';
+
+	if (n < 0)
+	{
+		n1 = n * -1;
+		buffer[0] = '-';
+	}
+	else
+	{
+		n1 = n;
+	}
+
+	lenght--;
+	do {
+		*(buffer + lenght) = (n1 % 10) + '0';
+		n1 = n1 / 10;
+		lenght--;
+	}
+	while (n1 > 0)
+		;
+	return (buffer);
+}
 
 /**
- * aToI - function to convert string to integer
- * @strn: string to be converted
+ * _atoi - function to convert string to integer
+ * @s: string to be converted
  * Return: an integer value
  */
+int _atoi(char *s)
+{
+	unsigned int count = 0, size = 0, oi = 0, pn = 1, m = 1, i;
 
-int aToI(char *strn)
-{
-unsigned int cnt4 = 0, strSize = 0, cnt1 = 0, cnt2 = 1, cnt3 = 1, cnt;
-while (*(strn + cnt4) != '\0')
-{
-if (strSize > 0 && (*(strn + cnt4) < '0' || *(strn + cnt4) > '9'))
-break;
-if (*(strn + cnt4) == '-')
-cnt2 *= -1;
-if ((*(strn + cnt4) >= '0') && (*(strn + cnt4) <= '9'))
-{
-if (strSize > 0)
-cnt3 *= 10;
-strSize++;
-}
-cnt4++;
-}
-for (cnt = cnt4 - strSize; cnt < cnt4; cnt++)
-{
-cnt1 = cnt1 + ((*(strn + cnt) - 48) * cnt3);
-cnt3 /= 10;
-}
-return (cnt1 *cnt2);
+	while (*(s + count) != '\0')
+	{
+		if (size > 0 && (*(s + count) < '0' || *(s + count) > '9'))
+			break;
+
+		if (*(s + count) == '-')
+			pn *= -1;
+
+		if ((*(s + count) >= '0') && (*(s + count) <= '9'))
+		{
+			if (size > 0)
+				m *= 10;
+			size++;
+		}
+		count++;
+	}
+
+	for (i = count - size; i < count; i++)
+	{
+		oi = oi + ((*(s + i) - 48) * m);
+		m /= 10;
+	}
+	return (oi * pn);
 }

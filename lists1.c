@@ -1,106 +1,109 @@
 #include "main.h"
 
 /**
- * addSepNodeEnd - function to add a separator found at the end of a sep_list
- * @nodHead: the start point of a linked list
- * @nodSep: variable for separator
+ * add_sep_node_end - function to add a separator found at the end of sep-list
+ * @head: the start point of a linked list
+ * @sep: variable for separator
  * Return: pointer to head
  */
+sep_list *add_sep_node_end(sep_list **head, char sep)
+{
+	sep_list *new, *temp;
 
-sep_list *addSepNodeEnd(sep_list **nodHead, char nodSep)
-{
-sep_list *sepNew, *sepTemp;
-sepNew = malloc(sizeof(sep_list));
-if (sepNew == NULL)
-return (NULL);
-sepNew->separator = nodSep;
-sepNew->next = NULL;
-sepTemp = *nodHead;
-if (sepTemp == NULL)
-{
-*nodHead = sepNew;
-}
-else
-{
-while (sepTemp->next != NULL)
-sepTemp = sepTemp->next;
-sepTemp->next = sepNew;
-}
-return (*nodHead);
-}
+	new = malloc(sizeof(sep_list));
+	if (new == NULL)
+		return (NULL);
 
+	new->separator = sep;
+	new->next = NULL;
+	temp = *head;
+
+	if (temp == NULL)
+	{
+		*head = new;
+	}
+	else
+	{
+		while (temp->next != NULL)
+			temp = temp->next;
+		temp->next = new;
+	}
+
+	return (*head);
+}
 
 /**
- * freeSepList - function to free a separator list
- * @nodHead: variable for the start point of a linked list
+ * free_sep_list - function to free a separator list
+ * @head: variable for the start point of a linked list
  * Return: nothing
  */
+void free_sep_list(sep_list **head)
+{
+	sep_list *temp;
+	sep_list *curr;
 
-void freeSepList(sep_list **nodHead)
-{
-sep_list *sepTemp;
-sep_list *sepNew;
-if (nodHead != NULL)
-{
-sepNew = *nodHead;
-while ((sepTemp = sepNew) != NULL)
-{
-sepNew = sepNew->next;
-free(sepTemp);
+	if (head != NULL)
+	{
+		curr = *head;
+		while ((temp = curr) != NULL)
+		{
+			curr = curr->next;
+			free(temp);
+		}
+		*head = NULL;
+	}
 }
-*nodHead = NULL;
-}
-}
-
 
 /**
- * addLineNodeEnd - function to add a command at the end of a node
- * @nodHead: start of alinked list
- * @cmdLine: variable for the commadn line
+ * add_line_node_end - function to add a command at the end of a node
+ * @head: start of alinked list
+ * @line: variable for the commadn line
  * Return: pointer to head
  */
+line_list *add_line_node_end(line_list **head, char *line)
+{
+	line_list *new, *temp;
 
-line_list *addLineNodeEnd(line_list **nodHead, char *cmdLine)
-{
-line_list *sepNew, *sepTemp;
-sepNew = malloc(sizeof(line_list));
-if (sepNew == NULL)
-return (NULL);
-sepNew->line = cmdLine;
-sepNew->next = NULL;
-sepTemp = *nodHead;
-if (sepTemp == NULL)
-{
-*nodHead = sepNew;
-}
-else
-{
-while (sepTemp->next != NULL)
-sepTemp = sepTemp->next;
-sepTemp->next = sepNew;
-}
-return (*nodHead);
-}
+	new = malloc(sizeof(line_list));
+	if (new == NULL)
+		return (NULL);
 
+	new->line = line;
+	new->next = NULL;
+	temp = *head;
+
+	if (temp == NULL)
+	{
+		*head = new;
+	}
+	else
+	{
+		while (temp->next != NULL)
+			temp = temp->next;
+		temp->next = new;
+	}
+
+	return (*head);
+}
 
 /**
- * freeLineList - function to free a line list
- * @nodHead: start point of a linked list
+ * free_line_list - function to free a line list
+ * @head: start point of a linked list
  * Return: nothing
  */
+void free_line_list(line_list **head)
+{
+	line_list *temp;
+	line_list *curr;
 
-void freeLineList(line_list **nodHead)
-{
-line_list *sepTemp;
-line_list *sepNew;
-if (nodHead != NULL)
-{
-sepNew = *nodHead;
-while ((sepTemp = sepNew) != NULL)
-{
-sepNew = sepNew->next;
-free(sepTemp);
-}
-*nodHead = NULL;
-}
+	if (head != NULL)
+	{
+		curr = *head;
+		while ((temp = curr) != NULL)
+		{
+			curr = curr->next;
+			free(temp);
+		}
+		*head = NULL;
+	}
 }

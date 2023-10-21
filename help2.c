@@ -1,44 +1,40 @@
 #include "main.h"
 
 /**
- * infHelp - function for information for the builtin help
+ * aux_help - function for information for the builtin help
  * Return: nothing
  */
-
-void infHelp(void)
+void aux_help(void)
 {
-char *helpVar = "help: help [-dms] [pattern ...]\n";
-write(STDOUT_FILENO, helpVar, strLength(helpVar));
-helpVar = "\tDisplay information about builtin commands.\n ";
-write(STDOUT_FILENO, helpVar, strLength(helpVar));
-helpVar = "Displays brief summaries of builtin commands.\n";
-write(STDOUT_FILENO, helpVar, strLength(helpVar));
+	char *help = "help: help [-dms] [pattern ...]\n";
+
+	write(STDOUT_FILENO, help, _strlen(help));
+	help = "\tDisplay information about builtin commands.\n ";
+	write(STDOUT_FILENO, help, _strlen(help));
+	help = "Displays brief summaries of builtin commands.\n";
+	write(STDOUT_FILENO, help, _strlen(help));
 }
-
-
 /**
- * aliasHelp - function with info for builtin alias
+ * aux_help_alias - function with info for builtin alias
  * Return: nothing
  */
-
-void aliasHelp(void)
+void aux_help_alias(void)
 {
-char *helpVar = "alias: alias [-p] [name[=value]...]\n";
-write(STDOUT_FILENO, helpVar, strLength(helpVar));
-helpVar = "\tDefine or display aliases.\n ";
-write(STDOUT_FILENO, helpVar, strLength(helpVar));
+	char *help = "alias: alias [-p] [name[=value]...]\n";
+
+	write(STDOUT_FILENO, help, _strlen(help));
+	help = "\tDefine or display aliases.\n ";
+	write(STDOUT_FILENO, help, _strlen(help));
 }
-
-
 /**
- * cdHelp - function with info for builtin cd
+ * aux_help_cd - function with info for builtin cd
  * Return: nothing
  */
-
-void cdHelp(void)
+void aux_help_cd(void)
 {
-char *helpVar = "cd: cd [-L|[-P [-e]] [-@]] [dir]\n";
-write(STDOUT_FILENO, helpVar, strLength(helpVar));
-helpVar = "\tChange the shell working directory.\n ";
-write(STDOUT_FILENO, helpVar, strLength(helpVar));
+	char *help = "cd: cd [-L|[-P [-e]] [-@]] [dir]\n";
+
+	write(STDOUT_FILENO, help, _strlen(help));
+	help = "\tChange the shell working directory.\n ";
+	write(STDOUT_FILENO, help, _strlen(help));
 }

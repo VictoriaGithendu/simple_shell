@@ -1,64 +1,68 @@
 #include "main.h"
 
 /**
- * errorEnv - function to display evn error message in get_env
- * @inf: stucture for data containing argument variables
+ * error_env - function to display evn error message in get_env
+ * @datash: stucture for data containing argument variables
  * Return: displays the error message
  */
-char *errorEnv(data_shell *inf)
+char *error_env(data_shell *datash)
 {
-int len;
-char *err;
-char *strCnt;
-char *stmnt;
-strCnt = iToA(inf->counter);
-stmnt = ": Unable to add/remove from environment\n";
-len = strLength(inf->av[0]) + strLength(strCnt);
-len += strLength(inf->args[0]) + strLength(stmnt) + 4;
-err = malloc(sizeof(char) * (len + 1));
-if (err == 0)
-{
-free(err);
-free(strCnt);
-return (NULL);
-}
-strCpy(err, inf->av[0]);
-strCat(err, ": ");
-strCat(err, strCnt);
-strCat(err, ": ");
-strCat(err, inf->args[0]);
-strCat(err, stmnt);
-strCat(err, "\0");
-free(strCnt);
-return (err);
+	int length;
+	char *error;
+	char *ver_str;
+	char *msg;
+
+	ver_str = aux_itoa(datash->counter);
+	msg = ": Unable to add/remove from environment\n";
+	length = _strlen(datash->av[0]) + _strlen(ver_str);
+	length += _strlen(datash->args[0]) + _strlen(msg) + 4;
+	error = malloc(sizeof(char) * (length + 1));
+	if (error == 0)
+	{
+		free(error);
+		free(ver_str);
+		return (NULL);
+	}
+
+	_strcpy(error, datash->av[0]);
+	_strcat(error, ": ");
+	_strcat(error, ver_str);
+	_strcat(error, ": ");
+	_strcat(error, datash->args[0]);
+	_strcat(error, msg);
+	_strcat(error, "\0");
+	free(ver_str);
+
+	return (error);
 }
 /**
- * errorPath - function to display error message for path
- * @inf: stucture for data containing argument variables
+ * error_path_126 - function to display error message for path
+ * @datash: stucture for data containing argument variables
  * Return: displays string error message
  */
-char *errorPath(data_shell *inf)
+char *error_path_126(data_shell *datash)
 {
-int len;
-char *strCnt;
-char *err;
-strCnt = iToA(inf->counter);
-len = strLength(inf->av[0]) + strLength(strCnt);
-len += strLength(inf->args[0]) + 24;
-err = malloc(sizeof(char) * (len + 1));
-if (err == 0)
-{
-free(err);
-free(strCnt);
-return (NULL);
-}
-strCpy(err, inf->av[0]);
-strCat(err, ": ");
-strCat(err, strCnt);
-strCat(err, ": ");
-strCat(err, inf->args[0]);
-strCat(err, ": Permission denied\n");
-strCat(err, "\0");
-free(strCnt);
-return (err);
+	int length;
+	char *ver_str;
+	char *error;
+
+	ver_str = aux_itoa(datash->counter);
+	length = _strlen(datash->av[0]) + _strlen(ver_str);
+	length += _strlen(datash->args[0]) + 24;
+	error = malloc(sizeof(char) * (length + 1));
+	if (error == 0)
+	{
+		free(error);
+		free(ver_str);
+		return (NULL);
+	}
+	_strcpy(error, datash->av[0]);
+	_strcat(error, ": ");
+	_strcat(error, ver_str);
+	_strcat(error, ": ");
+	_strcat(error, datash->args[0]);
+	_strcat(error, ": Permission denied\n");
+	_strcat(error, "\0");
+	free(ver_str);
+	return (error);
 }

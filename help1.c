@@ -1,83 +1,80 @@
 #include "main.h"
 
 /**
- * envHelp - function with information for builtin env
+ * aux_help_env - function for builtin setenv
  * Return: nothing
  */
-
-void envHelp(void)
+void aux_help_env(void)
 {
-char *helpVar = "env: env [option] [name=value] [command [args]]\n\t";
-write(STDOUT_FILENO, helpVar, strLength(helpVar));
-helpVar = "Print the enviroment of the shell.\n";
-write(STDOUT_FILENO, helpVar, strLength(helpVar));
+	char *help = "env: env [option] [name=value] [command [args]]\n\t";
+
+	write(STDOUT_FILENO, help, _strlen(help));
+	help = "Print the enviroment of the shell.\n";
+	write(STDOUT_FILENO, help, _strlen(help));
+
+}
+/**
+ * aux_help_setenv - function for builtin unsetenv
+ * Return: nothing
+ */
+void aux_help_setenv(void)
+{
+
+	char *help = "setenv: setenv (const char *name, const char *value,";
+
+	write(STDOUT_FILENO, help, _strlen(help));
+	help = "int replace)\n\t";
+	write(STDOUT_FILENO, help, _strlen(help));
+	help = "Add a new definition to the environment\n";
+	write(STDOUT_FILENO, help, _strlen(help));
+}
+/**
+ * aux_help_unsetenv - function for builtin unsetenv
+ * Return: nothing
+ */
+void aux_help_unsetenv(void)
+{
+	char *help = "unsetenv: unsetenv (const char *name)\n\t";
+
+	write(STDOUT_FILENO, help, _strlen(help));
+	help = "Remove an entry completely from the environment\n";
+	write(STDOUT_FILENO, help, _strlen(help));
 }
 
 
 /**
- * setenvHelp - function for builtin setenv
+ * aux_help_general - function with general information for builtin
  * Return: nothing
  */
-
-void setenvHelp(void)
+void aux_help_general(void)
 {
-char *helpVar = "setenv: setenv (const char *name, const char *value,";
-write(STDOUT_FILENO, helpVar, strLength(helpVar));
-helpVar = "int replace)\n\t";
-write(STDOUT_FILENO, helpVar, strLength(helpVar));
-helpVar = "Add a new definition to the environment\n";
-write(STDOUT_FILENO, helpVar, strLength(helpVar));
+	char *help = "^-^ bash, version 1.0(1)-release\n";
+
+	write(STDOUT_FILENO, help, _strlen(help));
+	help = "These commands are defined internally.Type 'help' to see the list";
+	write(STDOUT_FILENO, help, _strlen(help));
+	help = "Type 'help name' to find out more about the function 'name'.\n\n ";
+	write(STDOUT_FILENO, help, _strlen(help));
+	help = " alias: alias [name=['string']]\n cd: cd [-L|[-P [-e]] [-@]] ";
+	write(STDOUT_FILENO, help, _strlen(help));
+	help = "[dir]\nexit: exit [n]\n  env: env [option] [name=value] [command ";
+	write(STDOUT_FILENO, help, _strlen(help));
+	help = "[args]]\n  setenv: setenv [variable] [value]\n  unsetenv: ";
+	write(STDOUT_FILENO, help, _strlen(help));
+	help = "unsetenv [variable]\n";
+	write(STDOUT_FILENO, help, _strlen(help));
 }
-
-
 /**
- * unsetenvHelp - function for builtin unsetenv
+ * aux_help_exit - function for help with exit builtin
  * Return: nothing
  */
-
-void unsetenvHelp(void)
+void aux_help_exit(void)
 {
-char *helpVar = "unsetenv: unsetenv (const char *name)\n\t";
-write(STDOUT_FILENO, helpVar, strLength(helpVar));
-helpVar = "Remove an entry completely from the environment\n";
-write(STDOUT_FILENO, helpVar, strLength(helpVar));
-}
+	char *help = "exit: exit [n]\n Exit shell.\n";
 
-
-/**
- * generalHelp - function with general information for builtin
- * Return: nothing
- */
-
-void generalHelp(void)
-{
-char *helpVar = "^-^ bash, version 1.0(1)-release\n";
-write(STDOUT_FILENO, helpVar, strLength(helpVar));
-helpVar = "These commands are defined internally.Type 'help' to see the list";
-write(STDOUT_FILENO, helpVar, strLength(helpVar));
-helpVar = "Type 'help name' to find out more about the function 'name'.\n\n ";
-write(STDOUT_FILENO, helpVar, strLength(helpVar));
-helpVar = " alias: alias [name=['string']]\n cd: cd [-L|[-P [-e]] [-@]] ";
-write(STDOUT_FILENO, helpVar, strLength(helpVar));
-helpVar = "[dir]\nexit: exit [n]\n  env: env [option] [name=value] [command ";
-write(STDOUT_FILENO, helpVar, strLength(helpVar));
-helpVar = "[args]]\n  setenv: setenv [variable] [value]\n  unsetenv: ";
-write(STDOUT_FILENO, helpVar, strLength(helpVar));
-helpVar = "unsetenv [variable]\n";
-write(STDOUT_FILENO, helpVar, strLength(helpVar));
-}
-
-
-/**
- * exitHelp - function for help with exit builtin
- * Return: no return
- */
-void exitHelp(void)
-{
-char *helpVar = "exit: exit [n]\n Exit shell.\n";
-write(STDOUT_FILENO, helpVar, strLength(helpVar));
-helpVar = "Exits the shell with a status of N. If N is ommited, the exit";
-write(STDOUT_FILENO, helpVar, strLength(helpVar));
-helpVar = "statusis that of the last command executed\n";
-write(STDOUT_FILENO, helpVar, strLength(helpVar));
+	write(STDOUT_FILENO, help, _strlen(help));
+	help = "Exits the shell with a status of N. If N is ommited, the exit";
+	write(STDOUT_FILENO, help, _strlen(help));
+	help = "statusis that of the last command executed\n";
+	write(STDOUT_FILENO, help, _strlen(help));
 }
